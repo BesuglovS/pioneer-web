@@ -1,0 +1,84 @@
+﻿<!doctype html>
+<html lang="ru" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }} — Программирование квадрокоптеров Пионер</title>
+    <meta name="description" content="{{ description or title }}">
+    <link rel="canonical" href="{{ site.url }}{% if pageUrl %}{{ pageUrl }}{% endif %}">
+    <link rel="icon" href="{{ '/favicon.ico' | relUrl }}">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": "Программирование квадрокоптеров Пионер",
+        "description": "Документация по программированию квадрокоптеров Геоскан Пионер Мини 2 и Пионер Базовый",
+        "provider": { "@type": "Organization", "name": "Nayanova Academy" },
+        "inLanguage": "ru"
+    }
+    </script>
+
+    <link rel="stylesheet" href="{{ '/css/main.css' | relUrl }}?v={{ assetsHash.mainCss }}">
+</head>
+<body data-page-number="{{ pageNumber }}" class="page-doc">
+    <div class="progress-bar" id="progressBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Прокрутка страницы"></div>
+
+    <header class="site-header">
+        <div class="wrap">
+            <a href="{{ '/' | relUrl }}" class="brand"><span class="brand-d">🚁</span> Пионер <span class="brand-sub">/ документация по программированию — Мини 2 и Базовый</span></a>
+            <div class="header-actions">
+                <div class="theme-indicator" aria-live="polite"></div>
+                <button class="theme-toggle" aria-label="Переключить тему">🌙</button>
+                <button class="hamburger-button" aria-label="Меню разделов" aria-expanded="false">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="content-wrapper">
+        <aside class="toc-sidebar" id="tocSidebar">
+            <div class="toc-title">Содержание</div>
+            <nav class="toc-nav" aria-label="Содержание"></nav>
+        </aside>
+
+        <main class="main-content wrap" id="main-content">
+            <nav class="breadcrumb-nav" aria-label="Хлебные крошки">
+                <a href="{{ '/' | relUrl }}">Главная</a>
+                <span class="breadcrumb-sep">›</span>
+                {% if currentSection %}<span class="breadcrumb-section">{{ currentSection.title }}</span>{% endif %}
+                <span class="breadcrumb-sep">›</span>
+                <span class="breadcrumb-current">{{ title }}</span>
+            </nav>
+
+            <article class="page-content">
+                {{ content | safe }}
+            </article>
+
+            <div class="bottom-controls" id="bottomControls">
+                {% if prevPage %}
+                <a class="bottom-link bottom-link--prev" href="{{ prevPage.url }}"><span class="bottom-link__label">← Предыдущая</span><span class="bottom-link__title">{{ prevPage.title }}</span></a>
+                {% else %}<span class="bottom-link bottom-link--empty"></span>{% endif %}
+                {% if nextPage %}
+                <a class="bottom-link bottom-link--next" href="{{ nextPage.url }}"><span class="bottom-link__label">Следующая →</span><span class="bottom-link__title">{{ nextPage.title }}</span></a>
+                {% else %}<span class="bottom-link bottom-link--empty"></span>{% endif %}
+            </div>
+
+            <footer class="site-footer">
+                <p>Неофициальная учебная компиляция материалов по программированию образовательных квадрокоптеров <strong>Геоскан Пионер Мини 2</strong> и <strong>Геоскан Пионер Базовый</strong>. Основные источники: <a href="https://docs.geoscan.ru/pioneer/" target="_blank" rel="noopener">docs.geoscan.ru</a>, <a href="https://geoscan.education/pioneer-mini-2" target="_blank" rel="noopener">geoscan.education</a>, <a href="https://gitflic.ru/project/pioneer-team/pioneer-sdk2-example" target="_blank" rel="noopener">pioneer-sdk2-example</a>. Полный список ссылок — на странице <a href="/10-links/">«Ссылки»</a>.</p>
+            </footer>
+        </main>
+    </div>
+
+    <div class="hamburger-overlay" aria-hidden="true"></div>
+    <div class="hamburger-panel" role="dialog" aria-label="Навигация по разделам" aria-modal="true">
+        <div class="hamburger-header">🚁 Разделы <button class="hamburger-close" aria-label="Закрыть меню">✕</button></div>
+        <ul class="hamburger-list">
+            {% for p in lessonsData.lessons %}
+            <li><a class="hamburger-link" href="/{{ p.number | pad2 }}-{{ p.slug }}/">{{ p.number }}. {{ p.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script src="{{ '/js/main.js' | relUrl }}?v={{ assetsHash.mainJs }}" type="module"></script>
+</body>
+</html>

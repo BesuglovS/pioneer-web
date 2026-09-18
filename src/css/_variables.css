@@ -1,0 +1,40 @@
+:root {
+  --bg: #f7f7f5;
+  --bg-card: #ffffff;
+  --bg-soft: #f0f1f3;
+  --ink: #1c2430;
+  --ink-soft: #5b6675;
+  --line: #e3e5e8;
+  --accent: #e8630a;
+  --accent-dark: #c8570a;
+  --accent-soft: #fdeadd;
+  --link: #c8570a;
+  --code-bg: #161b22;
+  --code-ink: #e6edf3;
+  --code-inline-bg: #eef0f2;
+  --code-inline-ink: #9a3412;
+  --tok-c: #7ee787;
+  --tok-s: #a5d6ff;
+  --tok-k: #ff7b72;
+  --tok-b: #79c0ff;
+  --tok-n: #f2cc60;
+  --header-bg: rgba(255, 255, 255, .92);
+}
+
+[data-theme="dark"] {
+  --bg: #14181f;
+  --bg-card: #1d232c;
+  --bg-soft: #232a34;
+  --ink: #e2e7ee;
+  --ink-soft: #97a3b2;
+  --line: #2e3743;
+  --accent: #f0762b;
+  --accent-dark: #f0762b;
+  --accent-soft: #3a2a1d;
+  --link: #f0945c;
+  --code-bg: #10141a;
+  --code-ink: #e6edf3;
+  --code-inline-bg: #2a323d;
+  --code-inline-ink: #f5b08a;
+  --header-bg: rgba(20, 24, 31, .92);
+}

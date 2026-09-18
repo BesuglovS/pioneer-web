@@ -1,0 +1,84 @@
+﻿<!doctype html>
+<html lang="ru" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Программирование квадрокоптеров Пионер — документация</title>
+    <meta name="description" content="Документация по программированию квадрокоптеров Геоскан Пионер Мини 2 и Пионер Базовый: Pioneer SDK 2, нейросети RKNN, Lua, блочное ПО">
+    <link rel="canonical" href="{{ site.url }}/">
+    <link rel="icon" href="{{ '/favicon.ico' | relUrl }}">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": "Программирование квадрокоптеров Пионер",
+        "description": "Документация по программированию квадрокоптеров Геоскан Пионер Мини 2 и Пионер Базовый",
+        "provider": { "@type": "Organization", "name": "Nayanova Academy" },
+        "inLanguage": "ru"
+    }
+    </script>
+    <link rel="stylesheet" href="{{ '/css/main.css' | relUrl }}?v={{ assetsHash.mainCss }}">
+</head>
+<body class="page-index">
+    <header class="site-header">
+        <div class="wrap">
+            <a href="{{ '/' | relUrl }}" class="brand"><span class="brand-d">🚁</span> Пионер <span class="brand-sub">/ документация по программированию — Мини 2 и Базовый</span></a>
+            <div class="header-actions">
+                <div class="theme-indicator" aria-live="polite"></div>
+                <button class="theme-toggle" aria-label="Переключить тему">🌙</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="wrap index-main" id="main-content">
+        <div class="hero">
+            <h1>Программирование квадрокоптеров <span class="accent">Пионер</span></h1>
+            <p class="lead"><strong>Геоскан Пионер</strong> — линейка образовательных квадрокоптеров с открытым программированием. <strong>Пионер Мини 2</strong> — первый российский серийный образовательный квадрокоптер с бортовым искусственным интеллектом: 8-ядерный процессор с нейроускорителем под управлением Linux (Pioneer OS), камера 13 Мпикс с поворотным подвесом, двухдиапазонный Wi-Fi. <strong>Пионер Базовый</strong> — открытая платформа-конструктор с тем же автопилотом и возможностью расширения модулями. Коптеры программируются на Python, Lua и визуальными блоками, распознают объекты, метки ArUco, жесты и выполняют полностью автономные полёты.</p>
+            <div class="hero-links"><a class="btn" href="/02-start/">Начать работу</a> <a class="btn ghost" href="/01-overview/">Пионер Мини 2</a> <a class="btn ghost" href="/04-base/">Пионер Базовый</a></div>
+        </div>
+
+        <div class="search-container">
+            <label for="pages-search" class="sr-only">Поиск по документации</label>
+            <input type="text" id="pages-search" class="search-input" placeholder="🔍 Поиск: SDK, нейросети, Lua, блоки..." autocomplete="off">
+        </div>
+
+        {% for section in collections.sections %}
+        <div class="section-group" data-section="{{ section.id }}" id="section-{{ section.id }}">
+            <h2 class="section-title">{{ section.icon }} {{ section.title }}</h2>
+            <div class="section-cards">
+                {% for p in section.lessons %}
+                <a href="{{ p.url }}" class="topic-card" data-page="{{ p.num }}">
+                    <div class="topic-num">{{ p.num }}</div>
+                    <div class="topic-info">
+                        <h2>{{ p.title }}</h2>
+                        <p>{{ p.desc }}</p>
+                        {% if p.duration %}
+                        <div class="topic-meta"><span class="meta-duration">⏱ {{ p.duration }} мин</span> · <span class="meta-complexity" data-level="{{ p.complexity }}">{% if p.complexity == 'beginner' %}🚀 Начальный{% elif p.complexity == 'intermediate' %}📗 Средний{% elif p.complexity == 'advanced' %}📙 Продвинутый{% else %}{{ p.complexity }}{% endif %}</span></div>
+                        {% endif %}
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+
+        <p class="search-no-results" style="display:none">Ничего не найдено</p>
+
+        <footer class="site-footer">
+            <p>Неофициальная учебная компиляция материалов по программированию образовательных квадрокоптеров <strong>Геоскан Пионер Мини 2</strong> и <strong>Геоскан Пионер Базовый</strong>. Основные источники: <a href="https://docs.geoscan.ru/pioneer/" target="_blank" rel="noopener">docs.geoscan.ru</a>, <a href="https://geoscan.education/pioneer-mini-2" target="_blank" rel="noopener">geoscan.education</a>, <a href="https://gitflic.ru/project/pioneer-team/pioneer-sdk2-example" target="_blank" rel="noopener">pioneer-sdk2-example</a>. Полный список ссылок — на странице <a href="/10-links/">«Ссылки»</a>.</p>
+        </footer>
+    </main>
+
+    <div class="hamburger-overlay" aria-hidden="true"></div>
+    <div class="hamburger-panel" role="dialog" aria-label="Навигация по разделам" aria-modal="true">
+        <div class="hamburger-header">🚁 Разделы <button class="hamburger-close" aria-label="Закрыть меню">✕</button></div>
+        <ul class="hamburger-list">
+            {% for p in lessonsData.lessons %}
+            <li><a class="hamburger-link" href="/{{ p.number | pad2 }}-{{ p.slug }}/">{{ p.number }}. {{ p.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <script src="{{ '/js/main.js' | relUrl }}?v={{ assetsHash.mainJs }}" type="module"></script>
+</body>
+</html>

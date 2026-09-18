@@ -1,0 +1,31 @@
+code {
+  background: var(--code-inline-bg); border-radius: 5px; padding: 1px 6px;
+  font: 14px/1.5 Consolas, "Cascadia Mono", Menlo, monospace;
+  color: var(--code-inline-ink);
+}
+
+.codewrap { margin: 14px 0; }
+.codewrap pre {
+  margin: 0; background: var(--code-bg); color: var(--code-ink);
+  border-radius: 12px; padding: 16px 18px; overflow-x: auto;
+  font: 13.5px/1.6 Consolas, "Cascadia Mono", Menlo, monospace;
+}
+.codewrap pre code { background: none; color: inherit; padding: 0; font-size: inherit; }
+
+/* baked highlight tokens (from legacy HTML) */
+.tok-c { color: var(--tok-c); font-style: italic; }
+.tok-s { color: var(--tok-s); }
+.tok-k { color: var(--tok-k); }
+.tok-b { color: var(--tok-b); }
+.tok-n { color: var(--tok-n); }
+
+/* highlight.js token classes */
+.hljs-comment { color: var(--tok-c); font-style: italic; }
+.hljs-quote { color: var(--tok-c); font-style: italic; }
+.hljs-string { color: var(--tok-s); }
+.hljs-keyword { color: var(--tok-k); }
+.hljs-built_in { color: var(--tok-b); }
+.hljs-number { color: var(--tok-n); }
+.hljs-attr { color: var(--tok-b); }
+.hljs-title { color: var(--tok-b); }
+.hljs-function { color: var(--tok-b); }

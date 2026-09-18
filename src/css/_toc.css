@@ -1,0 +1,24 @@
+/* side TOC used on doc pages */
+.toc-sidebar {
+  display: none;
+  position: sticky; top: 70px;
+  width: 260px; flex-shrink: 0;
+  max-height: calc(100vh - 90px); overflow-y: auto;
+  padding: 16px 14px 20px 20px;
+  font-size: 13px;
+}
+.toc-nav { display: block; }
+.toc-title {
+  font-weight: 700; font-size: 12px; text-transform: uppercase;
+  letter-spacing: .4px; color: var(--ink-soft); margin-bottom: 8px;
+}
+.toc-list { list-style: none; margin: 0; padding: 0; }
+.toc-item { margin: 3px 0; }
+.toc-list__link {
+  display: block; padding: 3px 8px; border-radius: 6px;
+  color: var(--ink-soft); text-decoration: none; line-height: 1.4;
+}
+.toc-list__link:hover { color: var(--accent); background: var(--accent-soft); }
+.toc-list__link--active { color: var(--accent); background: var(--accent-soft); font-weight: 600; }
+.toc-list__link--level-2 { padding-left: 20px; font-size: 12px; }
+.toc-list__link--level-3 { padding-left: 32px; font-size: 11.5px; }

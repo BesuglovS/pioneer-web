@@ -1,0 +1,5 @@
+.tablewrap { overflow-x: auto; margin: 14px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; background: var(--bg-card); border-radius: 10px; overflow: hidden; }
+th, td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; vertical-align: top; color: var(--ink); }
+th { background: var(--bg-soft); font-weight: 600; }
+tr:nth-child(even) td { background: color-mix(in srgb, var(--bg-soft) 50%, var(--bg-card)); }

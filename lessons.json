@@ -1,0 +1,176 @@
+{
+  "course": {
+    "id": "pioneer-docs",
+    "title": "Программирование квадрокоптеров Пионер",
+    "description": "Документация по программированию квадрокоптеров Геоскан Пионер Мини 2 и Пионер Базовый: Pioneer SDK 2, нейросети RKNN, Lua, блочное ПО",
+    "author": "Pioneer Docs Team",
+    "version": "1.0"
+  },
+  "sections": [
+    {
+      "id": "mini2",
+      "title": "Пионер Мини 2",
+      "description": "Обзор квадрокоптера с бортовым ИИ, быстрый старт и способы запуска программ",
+      "icon": "🚁",
+      "order": 1,
+      "startLesson": 1,
+      "endLesson": 3
+    },
+    {
+      "id": "base",
+      "title": "Пионер Базовый",
+      "description": "Открытая платформа-конструктор: характеристики, модули, распиновка",
+      "icon": "🛠️",
+      "order": 2,
+      "startLesson": 4,
+      "endLesson": 4
+    },
+    {
+      "id": "python",
+      "title": "Python: SDK и примеры",
+      "description": "Полное справочное руководство Pioneer SDK 2 и разбор готовых примеров кода",
+      "icon": "🐍",
+      "order": 3,
+      "startLesson": 5,
+      "endLesson": 5
+    },
+    {
+      "id": "neural",
+      "title": "Нейросети на борту",
+      "description": "Инференс нейросетей на NPU: детекция, сегментация, позы, OCR, жесты",
+      "icon": "🧠",
+      "order": 4,
+      "startLesson": 6,
+      "endLesson": 6
+    },
+    {
+      "id": "autopilot",
+      "title": "Lua и автопилот",
+      "description": "Скрипты для полетного контроллера: датчики, периферия, низкоуровневая работа",
+      "icon": "⚙️",
+      "order": 5,
+      "startLesson": 7,
+      "endLesson": 7
+    },
+    {
+      "id": "visual",
+      "title": "Блочное программирование",
+      "description": "Bricks, Jump 2, Trik Studio — визуальные среды для начинающих",
+      "icon": "🧩",
+      "order": 6,
+      "startLesson": 8,
+      "endLesson": 8
+    },
+    {
+      "id": "resources",
+      "title": "Материалы",
+      "description": "Примеры кода и официальные ресурсы",
+      "icon": "📚",
+      "order": 7,
+      "startLesson": 9,
+      "endLesson": 10
+    }
+  ],
+  "lessons": [
+    {
+      "number": 1,
+      "slug": "overview",
+      "title": "Обзор платформы",
+      "section": "mini2",
+      "description": "Образовательный квадрокоптер Геоскан Пионер Мини 2: характеристики, архитектура ПО, способы программирования; краткий обзор линейки и Пионера Базового",
+      "duration": 10,
+      "complexity": "beginner",
+      "html": "index"
+    },
+    {
+      "number": 2,
+      "slug": "start",
+      "title": "Быстрый старт",
+      "section": "mini2",
+      "description": "Подготовка Пионер Мини 2 к полетам, подключение по Wi-Fi, Pioneer Code, SSH, установка Pioneer OS",
+      "duration": 20,
+      "complexity": "beginner",
+      "html": "start"
+    },
+    {
+      "number": 3,
+      "slug": "launch",
+      "title": "Способы запуска программы",
+      "section": "mini2",
+      "description": "Как запустить программу: Pioneer Code (CodeOss) на борту, SSH-терминал, запуск с ноутбука через pioneer_sdk2, VS Code + перенос на борт",
+      "duration": 15,
+      "complexity": "beginner",
+      "html": "launch"
+    },
+    {
+      "number": 4,
+      "slug": "base",
+      "title": "Пионер Базовый",
+      "section": "base",
+      "description": "Характеристики, модули, распиновка, комплект поставки, сравнение с Мини 2",
+      "duration": 10,
+      "complexity": "beginner",
+      "html": "base"
+    },
+    {
+      "number": 5,
+      "slug": "sdk2",
+      "title": "Pioneer SDK 2",
+      "section": "python",
+      "description": "Полное справочное руководство по классам Python API с примерами",
+      "duration": 60,
+      "complexity": "intermediate",
+      "html": "sdk2"
+    },
+    {
+      "number": 6,
+      "slug": "rknn",
+      "title": "Нейросети (RKNN)",
+      "section": "neural",
+      "description": "Детекция, сегментация, позы, OCR, жесты и собственные модели на NPU",
+      "duration": 45,
+      "complexity": "advanced",
+      "html": "rknn"
+    },
+    {
+      "number": 7,
+      "slug": "lua",
+      "title": "Lua",
+      "section": "autopilot",
+      "description": "Программирование автопилота на Lua",
+      "duration": 30,
+      "complexity": "advanced",
+      "html": "lua"
+    },
+    {
+      "number": 8,
+      "slug": "blocks",
+      "title": "Блочное ПО",
+      "section": "visual",
+      "description": "Bricks, Jump, Jump 2, Trik Studio — визуальное программирование для начинающих",
+      "duration": 15,
+      "complexity": "beginner",
+      "html": "blocks"
+    },
+    {
+      "number": 9,
+      "slug": "examples",
+      "title": "Примеры",
+      "section": "resources",
+      "description": "Разбор репозитория pioneer-sdk2-example",
+      "duration": 25,
+      "complexity": "intermediate",
+      "html": "examples"
+    },
+    {
+      "number": 10,
+      "slug": "links",
+      "title": "Ссылки",
+      "section": "resources",
+      "description": "Все официальные ресурсы по Пионеру",
+      "duration": 5,
+      "complexity": "beginner",
+      "html": "links"
+    }
+  ]
+}

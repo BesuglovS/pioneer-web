@@ -1,0 +1,7 @@
+@media print {
+  .site-header, .toc-sidebar, .progress-bar, .hamburger-panel, .hamburger-overlay,
+  .bottom-controls, .theme-toggle, .hamburger-button, .search-container { display: none !important; }
+  body { background: #fff; color: #000; }
+  .codewrap pre { white-space: pre-wrap; }
+  table { font-size: 12px; }
+}
