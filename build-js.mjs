@@ -5,6 +5,7 @@ import { mkdirSync, existsSync } from 'fs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const src = resolve(__dirname, 'src/js/script.js');
+const themeInitSrc = resolve(__dirname, 'src/js/theme-init.js');
 const out = resolve(__dirname, '_site/js');
 
 async function buildJS() {
@@ -17,6 +18,15 @@ async function buildJS() {
       target: ['chrome100', 'firefox100'],
       outfile: resolve(out, 'main.js'),
       format: 'esm',
+      sourcemap: false,
+    });
+    await build({
+      entryPoints: [themeInitSrc],
+      bundle: true,
+      minify: true,
+      target: ['chrome100', 'firefox100'],
+      outfile: resolve(out, 'theme-init.js'),
+      format: 'iife',
       sourcemap: false,
     });
     console.log('✅ JS built successfully');

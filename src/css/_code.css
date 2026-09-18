@@ -18,14 +18,3 @@ code {
 .tok-k { color: var(--tok-k); }
 .tok-b { color: var(--tok-b); }
 .tok-n { color: var(--tok-n); }
-
-/* highlight.js token classes */
-.hljs-comment { color: var(--tok-c); font-style: italic; }
-.hljs-quote { color: var(--tok-c); font-style: italic; }
-.hljs-string { color: var(--tok-s); }
-.hljs-keyword { color: var(--tok-k); }
-.hljs-built_in { color: var(--tok-b); }
-.hljs-number { color: var(--tok-n); }
-.hljs-attr { color: var(--tok-b); }
-.hljs-title { color: var(--tok-b); }
-.hljs-function { color: var(--tok-b); }

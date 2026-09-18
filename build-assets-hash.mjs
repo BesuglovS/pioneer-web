@@ -20,6 +20,7 @@ function buildHashes() {
   const candidates = {
     mainCss: resolve(siteDir, 'css', 'main.css'),
     mainJs: resolve(siteDir, 'js', 'main.js'),
+    themeInitJs: resolve(siteDir, 'js', 'theme-init.js'),
   };
 
   for (const [key, filePath] of Object.entries(candidates)) {
@@ -30,9 +31,6 @@ function buildHashes() {
       assets[key] = 'dev';
     }
   }
-
-  assets.mainCssFile = `main.${assets.mainCss}.css`;
-  assets.mainJsFile = `main.${assets.mainJs}.js`;
 
   writeFileSync(outPath, JSON.stringify(assets, null, 2));
   console.log(`✅ assetsHash.json generated: css=${assets.mainCss} js=${assets.mainJs}`);

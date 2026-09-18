@@ -25,7 +25,6 @@
 | **Eleventy v3** | Генератор статических сайтов |
 | **Nunjucks** | Шаблонизатор (layout-страницы и главная) |
 | **esbuild** | Бандлер CSS и JS |
-| **highlight.js** | Сборка подсветки на будущее (для новых markdown-фенсов) |
 | Vanilla JS | Интерактив: ES-модули без фреймворков |
 
 > Контент страниц — эталонный HTML (перенесён из прежнего самописного конструктора). Md-движок Eleventy работает в сквозном режиме: каждый `src/*.md` после front matter попадает в вывод как есть, без markdown-обработки. Это защищает пустые строки и отступы внутри `<pre>` блоков `codewrap`.
@@ -53,9 +52,9 @@ npm run build
 | `npm run build` | Полная сборка для продакшена (7 шагов, включая sw.js) |
 | `npm run build:dev` | Сборка без service worker |
 | `npm run build:css` | Только CSS → `_site/css/main.css` |
-| `npm run build:js` | Только JS + highlight.js |
+| `npm run build:js` | Только JS (main.js + theme-init.js) |
 | `npm run build:sw` | Генерация `_site/sw.js` |
-| `npm run build:config-meta` | Перегенерация `courseConfig.json` из `lessons.json` |
+| `npm run build:config-meta` | Перегенерация `src/js/config/courseData.js` из `lessons.json` |
 | `npm run build:assets-hash` | Перегенерация `assetsHash.json` (кэш-бастер `?v=`) |
 | `npm run clean` | Удаление `_site` и `node_modules` (PowerShell) |
 | `npm run deploy` | Сборка + деплой через SSH (PowerShell) |
@@ -66,12 +65,14 @@ npm run build
 ```
 pioneer-web/
 ├── src/                      # Исходники сайта
-│   ├── _includes/            # Nunjucks-шаблоны (layout.njk, layout-index.njk)
-│   ├── _data/                # Данные Eleventy (site.json, lessonsData.cjs,
-│   │                         # eleventyComputed.js, courseConfig.json*, assetsHash.json*)
+│   ├── _includes/            # Nunjucks-шаблоны (layout.njk, layout-index.njk, partials/)
+│   ├── _data/                # Данные Eleventy (site.json, lessonsData.cjs, examples.cjs,
+│   │                         # eleventyComputed.js, assetsHash.json*)
 │   ├── css/                  # Стили (12 partials, index.css — точка входа)
-│   ├── js/                   # JavaScript: config/ (константы, метаданные), modules/ (9 файлов)
+│   ├── js/                   # JavaScript: config/ (константы, courseData.js*), modules/ (9 файлов)
 │   ├── index.njk             # Главная страница
+│   ├── 404.md                # Страница 404 → /404.html
+│   ├── robots.txt.njk        # robots.txt; sitemap.njk → /sitemap.xml
 │   ├── 01-overview.md …      # 10 уроков (эталонный HTML внутри .md)
 │   └── examples/             # 8 страниц разбора примеров (не в lessons.json)
 │       ├── mission.md            → /examples/mission/
@@ -85,21 +86,22 @@ pioneer-web/
 ├── gf/pioneer-sdk2-example/  # Локальный клон репозитория примеров (источник кода для разборов)
 ├── lessons.json              # Метаданные уроков (источник истины)
 ├── eleventy.config.mjs       # Конфигурация Eleventy
-├── build-*.mjs               # Скрипты сборки
+├── build-*.mjs               # Скрипты сборки (clean, config-meta, css, js, assets-hash, sw)
 ├── deploy.ps1                # Деплой по SSH
 ├── pioneer.nayanovaacademy.ru # nginx-конфиг (деплоится deploy.ps1)
 └── _site/                    # Сгенерированный сайт (результат сборки)
 ```
+`*` — генерируются сборкой, не редактировать вручную.
 
 ## Конвейер сборки (`npm run build`)
 
-1. `build-css.mjs` → `_site/css/main.css` (esbuild из `src/css/index.css`)
-2. `build-js.mjs` → `_site/js/main.js` (esbuild, ESM, minified)
-3. `build-highlight.mjs` → `_site/js/hljs.min.js` (про запас для новых markdown-фенсов)
-4. `build-config-meta.mjs` → `src/_data/courseConfig.json` из `lessons.json`
+1. `build-clean.mjs` → полное удаление `_site/` (без этого в деплой и precache SW попадают каталоги старых slug'ов)
+2. `build-config-meta.mjs` → `src/js/config/courseData.js` из `lessons.json`
+3. `build-css.mjs` → `_site/css/main.css` (esbuild из `src/css/index.css`)
+4. `build-js.mjs` → `_site/js/main.js` (esbuild, ESM, minified) + `_site/js/theme-init.js` (iife, anti-FOUC)
 5. `build-assets-hash.mjs` → `src/_data/assetsHash.json`
-6. `npx @11ty/eleventy` → `_site/{NN-slug}/index.html` + passthrough (css/js/favicon)
-7. `build-sw.mjs` → `_site/sw.js` (последний шаг; сканирует весь `_site/` в precache)
+6. `npx @11ty/eleventy` → `_site/{NN-slug}/index.html`, `404.html`, `robots.txt`, `sitemap.xml` + passthrough (favicon)
+7. `build-sw.mjs` → `_site/sw.js` (последний шаг; CACHE_NAME — хэш контента, precache сканирует весь `_site/`)
 
 ## Деплой
 

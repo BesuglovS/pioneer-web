@@ -8,9 +8,9 @@ const PROJECT = path.dirname(__filename);
 const SRC = path.join(PROJECT, "src");
 
 export default function(eleventyConfig) {
-    // Passthrough copy — статические файлы
-    eleventyConfig.addPassthroughCopy("src/css");
-    eleventyConfig.addPassthroughCopy("src/js");
+    // Passthrough copy — статические файлы.
+    // CSS/JS собираются esbuild'ом в _site/css/main.css и _site/js/main.js,
+    // сырые исходники в вывод не копируются.
     eleventyConfig.addPassthroughCopy("favicon.ico");
 
     // Контент всех страниц — эталонный HTML (препроцессинг из прежнего конструктора).
@@ -71,7 +71,7 @@ export default function(eleventyConfig) {
                         num: l.number,
                         title: l.title,
                         desc: l.description,
-                        url: found ? found.url : "/" + l.slug + "/",
+                        url: found ? found.url : "/" + String(l.number).padStart(2, '0') + "-" + l.slug + "/",
                         duration: l.duration,
                         complexity: l.complexity,
                     };
@@ -85,15 +85,17 @@ export default function(eleventyConfig) {
     });
 
     // Data
-    eleventyConfig.addGlobalData("layout", "layout.njk");
     eleventyConfig.addGlobalData("currentYear", new Date().getFullYear());
 
-    // Dev/serve: пересборка JS/CSS при изменении исходников
+    // Dev/serve: пересборка JS/CSS при изменении исходников.
+    // В production-сборке CSS/JS собираются отдельными шагами npm run build — не дублируем.
+    const isServe = process.argv.includes('--serve') || process.argv.includes('--watch');
     eleventyConfig.addWatchTarget("src/js");
     eleventyConfig.addWatchTarget("src/css");
     eleventyConfig.addWatchTarget("src/_includes");
 
     eleventyConfig.on('eleventy.after', () => {
+        if (!isServe) return;
         try {
             execSync('node build-css.mjs && node build-js.mjs', {
                 stdio: 'inherit',

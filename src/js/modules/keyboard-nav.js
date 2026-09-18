@@ -4,9 +4,11 @@ export function initKeyboardNav() {
   const path = window.location.pathname;
 
   document.addEventListener('keydown', (e) => {
+    if (e.repeat) return;
     if (e.altKey || e.ctrlKey || e.metaKey) return;
     const tag = (document.activeElement && document.activeElement.tagName) || '';
-    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+    const editable = document.activeElement && document.activeElement.isContentEditable;
+    if (editable || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
 
     if ((e.key === 'ArrowRight' || e.key === 'l') && next) {
       window.location.href = next.getAttribute('href');

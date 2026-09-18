@@ -1,0 +1,9 @@
+<div class="hamburger-overlay" aria-hidden="true"></div>
+<div class="hamburger-panel" role="dialog" aria-label="Навигация по разделам" aria-modal="true">
+    <div class="hamburger-header">🚁 Разделы <button class="hamburger-close" aria-label="Закрыть меню">✕</button></div>
+    <ul class="hamburger-list">
+        {% for p in lessonsData.lessons %}
+        <li><a class="hamburger-link" href="/{{ p.number | pad2 }}-{{ p.slug }}/">{{ p.number }}. {{ p.title }}</a></li>
+        {% endfor %}
+    </ul>
+</div>

@@ -1,54 +1,44 @@
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const lessonsPath = resolve(__dirname, 'lessons.json');
-const outDir = resolve(__dirname, 'src/_data');
-const outPath = resolve(outDir, 'courseConfig.json');
+const outPath = resolve(__dirname, 'src/js/config/courseData.js');
+
+function pad2(n) {
+  return String(n).padStart(2, '0');
+}
 
 function buildConfigMeta() {
-  if (!existsSync(lessonsPath)) {
-    console.error('❌ lessons.json not found');
-    process.exit(1);
-  }
-
-  if (!existsSync(outDir)) mkdirSync(outDir, { recursive: true });
-
   const data = JSON.parse(readFileSync(lessonsPath, 'utf8'));
   const lessons = data.lessons || [];
   const sections = data.sections || [];
 
-  const LESSON_META = {};
+  const pages = lessons.map((l) => ({
+    number: l.number,
+    url: `/${pad2(l.number)}-${l.slug}/`,
+    title: l.title,
+    section: l.section,
+    description: l.description || '',
+    duration: l.duration,
+    complexity: l.complexity,
+  }));
 
-  for (const lesson of lessons) {
-    LESSON_META[lesson.slug] = {
-      number: lesson.number,
-      url: `/${String(lesson.number).padStart(2, '0')}-${lesson.slug}/`,
-      title: lesson.title,
-      section: lesson.section,
-      order: lesson.number,
-      description: lesson.description || '',
-      duration: lesson.duration,
-      complexity: lesson.complexity,
-    };
-  }
+  const secs = sections.map((s) => ({
+    id: s.id,
+    name: s.title,
+    icon: s.icon,
+  }));
 
-  const config = {
-    LESSON_META,
-    sections: sections.map((s) => ({
-      id: s.id,
-      name: s.title,
-      icon: s.icon,
-      order: s.order,
-      startLesson: s.startLesson,
-      endLesson: s.endLesson,
-    })),
-    totalLessons: lessons.length,
-  };
+  const js = `// АВТОГЕНЕРИРУЕТСЯ из lessons.json (npm run build:config-meta) — НЕ редактировать вручную
+export const PAGES = ${JSON.stringify(pages, null, 2)};
 
-  writeFileSync(outPath, JSON.stringify(config, null, 2));
-  console.log(`✅ courseConfig.json generated (${lessons.length} lessons, ${sections.length} sections)`);
+export const SECTIONS = ${JSON.stringify(secs, null, 2)};
+`;
+
+  writeFileSync(outPath, js);
+  console.log(`✅ courseData.js generated (${pages.length} pages, ${secs.length} sections)`);
 }
 
 buildConfigMeta();

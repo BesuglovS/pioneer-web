@@ -5,23 +5,19 @@
   "type": "module",
   "scripts": {
     "start": "npx @11ty/eleventy --serve",
-    "build": "node build-css.mjs && node build-js.mjs && node build-highlight.mjs && node build-config-meta.mjs && node build-assets-hash.mjs && npx @11ty/eleventy && node build-sw.mjs",
+    "build": "node build-clean.mjs && node build-config-meta.mjs && node build-css.mjs && node build-js.mjs && node build-assets-hash.mjs && npx @11ty/eleventy && node build-sw.mjs",
     "build:css": "node build-css.mjs",
-    "build:js": "node build-js.mjs && node build-highlight.mjs",
+    "build:js": "node build-js.mjs",
     "build:sw": "node build-sw.mjs",
     "build:config-meta": "node build-config-meta.mjs",
     "build:assets-hash": "node build-assets-hash.mjs",
-    "build:dev": "node build-css.mjs && node build-js.mjs && node build-highlight.mjs && node build-config-meta.mjs && node build-assets-hash.mjs && npx @11ty/eleventy",
+    "build:dev": "node build-clean.mjs && node build-config-meta.mjs && node build-css.mjs && node build-js.mjs && node build-assets-hash.mjs && npx @11ty/eleventy",
     "clean": "if (Test-Path _site) { Remove-Item -Recurse -Force _site }; if (Test-Path node_modules) { Remove-Item -Recurse -Force node_modules }",
     "deploy": "powershell -File deploy.ps1",
     "deploy:dry": "powershell -File deploy.ps1 -DryRun"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.0.0",
-    "esbuild": "^0.24.0",
-    "highlight.js": "^11.10.0",
-    "markdown-it": "^14.1.0",
-    "markdown-it-anchor": "^9.2.1",
-    "nunjucks": "^3.2.4"
+    "esbuild": "^0.24.0"
   }
 }

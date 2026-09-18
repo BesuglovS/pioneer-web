@@ -51,3 +51,20 @@ export function storageSet(key, value) {
     return false;
   }
 }
+
+export function ssGet(key) {
+  try {
+    return sessionStorage.getItem(STORAGE_PREFIX + key);
+  } catch {
+    return null;
+  }
+}
+
+export function ssSet(key, value) {
+  try {
+    sessionStorage.setItem(STORAGE_PREFIX + key, value);
+    return true;
+  } catch {
+    return false;
+  }
+}

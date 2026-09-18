@@ -57,6 +57,9 @@ server {
     index index.html;
     autoindex off;
 
+    # Все несуществующие пути — честный 404 со статичной страницей
+    error_page 404 /404.html;
+
     # Логирование
     access_log /var/log/nginx/pioneer.nayanovaacademy.ru.access.log;
     error_log  /var/log/nginx/pioneer.nayanovaacademy.ru.error.log;
@@ -77,7 +80,7 @@ server {
 
     # 2. Основная маршрутизация
     location / {
-        try_files $uri $uri/ /index.html;
+        try_files $uri $uri/ =404;
     }
 
     # 2a. Редиректы старой нумерации страниц (до разделения по моделям и добавления урока)
@@ -107,15 +110,29 @@ server {
         add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; font-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'" always;
     }
 
-    # 4. Кэширование статических ресурсов (CSS/JS/изображения/шрифты — 1 год)
+    # 4. Кэширование статических ресурсов (CSS/JS/изображения — 1 год; имена с content-hash ?v=)
+    # Свой add_header => дублируем security-набор (см. шапку файла).
     location ~* \.(css|js|png|jpg|jpeg|gif|ico|svg|webp|woff|woff2|ttf|eot)$ {
         add_header Cache-Control "public, max-age=31536000, immutable" always;
+        add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+        add_header X-Frame-Options "DENY" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+        add_header Permissions-Policy "camera=(), microphone=(), geolocation=()" always;
+        add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; font-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'" always;
         access_log off;
     }
 
-    # 5. HTML — не кэшируем (контент меняется при деплое)
+    # 5. HTML — не кэшируем (контент меняется при деплое).
+    # Свой add_header => дублируем security-набор (см. шапку файла).
     location ~* \.html$ {
         add_header Cache-Control "no-cache, must-revalidate" always;
+        add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+        add_header X-Frame-Options "DENY" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+        add_header Permissions-Policy "camera=(), microphone=(), geolocation=()" always;
+        add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; font-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'" always;
     }
 
     # 6. Блокировка скрытых файлов (кроме /.well-known/acme-challenge/)

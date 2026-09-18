@@ -1,9 +1,15 @@
+import { ssGet, ssSet } from './utils.js';
+
+function scrollKey() {
+  return 'scroll' + window.location.pathname;
+}
+
 export function initScrollRestore() {
   // Восстановление позиции при переходе назад/вперёд
-  window.addEventListener('popstate', (e) => {
+  window.addEventListener('popstate', () => {
     const hash = window.location.hash.slice(1);
     if (!hash) {
-      const saved = sessionStorage.getItem('pioneer-web-scroll' + window.location.pathname);
+      const saved = ssGet(scrollKey());
       if (saved) {
         window.scrollTo(0, parseInt(saved, 10) || 0);
       }
@@ -15,7 +21,7 @@ export function initScrollRestore() {
     if (saveTimer) return;
     saveTimer = setTimeout(() => {
       saveTimer = null;
-      sessionStorage.setItem('pioneer-web-scroll' + window.location.pathname, String(window.scrollY));
+      ssSet(scrollKey(), String(window.scrollY));
     }, 200);
   }, { passive: true });
 }

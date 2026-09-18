@@ -35,6 +35,22 @@ export function initHamburger() {
   overlay.addEventListener('click', closePanel);
   closeBtn.addEventListener('click', closePanel);
 
+  // focus-trap: Tab не выпускает фокус из модальной панели
+  panel.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab') return;
+    const focusables = panel.querySelectorAll('a[href], button');
+    if (!focusables.length) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  });
+
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && panel.classList.contains('open')) closePanel();
   });
