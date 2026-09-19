@@ -69,6 +69,15 @@
       "order": 7,
       "startLesson": 9,
       "endLesson": 10
+    },
+    {
+      "id": "deep",
+      "title": "Дополнительно",
+      "description": "Исследование бортовой системы и расширенный справочник по Python",
+      "icon": "🔬",
+      "order": 8,
+      "startLesson": 11,
+      "endLesson": 12
     }
   ],
   "lessons": [
@@ -171,6 +180,26 @@
       "duration": 5,
       "complexity": "beginner",
       "html": "links"
+    },
+    {
+      "number": 11,
+      "slug": "system",
+      "title": "Исследование системы",
+      "section": "deep",
+      "description": "Аудит бортового компьютера Пионер Мини 2: платформа RK3576, камеры и сенсоры, сеть, службы systemd, порты, gRPC API, NPU, файловая система",
+      "duration": 20,
+      "complexity": "advanced",
+      "html": "system"
+    },
+    {
+      "number": 12,
+      "slug": "python",
+      "title": "Программирование на Python",
+      "section": "deep",
+      "description": "Расширенный справочник по pioneer_sdk2 и pioneer_rknn: полётные команды, телеметрия, события, камеры, сервопривод, RC-каналы, нейросети на NPU",
+      "duration": 40,
+      "complexity": "intermediate",
+      "html": "python"
     }
   ]
 }
