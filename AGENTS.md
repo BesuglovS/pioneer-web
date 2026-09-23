@@ -30,12 +30,13 @@
    (`storageGet/storageSet`, `ssGet/ssSet`).
 9. **Service worker регистрируется только в продакшене** (`sw-register.js` пропускает localhost).
 
-## 🗺 Два типа страниц
+## 🗺 Три типа страниц
 
 | Тип | Расположение | URL | В `lessons.json`? | На главной/в гамбургере/поиске? | Prev/next |
 |---|---|---|---|---|---|
 | **Урок** | `src/NN-slug.md` | `/NN-slug/` | да | да | да (по `pageNumber`) |
 | **Разбор примеров** | `src/examples/<slug>.md` | `/examples/<slug>/` (пермалинк) | **нет** | нет | нет |
+| **Справочник SDK2** | `src/sdk2/*.njk` | `/sdk2/...` (пермалинк) | **нет** | только отдельные ссылки | свой `.bottom-controls` |
 
 Страницы разбора (`src/examples/*.md`, 8 шт.: mission, get-telemetry, camera, aruco,
 rc-channels, human-tracking, wasd-flight, events) не имеют `pageNumber`, поэтому
@@ -44,6 +45,30 @@ rc-channels, human-tracking, wasd-flight, events) не имеют `pageNumber`, 
 а урок 9 содержит сводную таблицу разборов. **Не добавляйте их в `lessons.json`** — они не должны
 смотреться «уроками» на главной. Коллекции Eleventy (`pages`, `sections`) собирают только `src/*.md`
 (корень), поэтому файлы в `src/examples/` автоматически не попадают на главную.
+
+### 📖 Справочник SDK2 (`/sdk2/`)
+
+Постраничный API-справочник `pioneer_sdk2`/`pioneer_rknn`, портированный из папки `docs/`
+(генератор на Python). Страницы строятся Eleventy-пагинацией по данным `src/_data/sdk2.json`:
+
+| Шаблон | Пагинация | Пермалинк |
+|---|---|---|
+| `src/sdk2/index.njk` | — | `/sdk2/` |
+| `src/sdk2/category.njk` | `sdk2.categories` → `cat` | `/sdk2/{{ cat.slug }}/` |
+| `src/sdk2/method.njk` | `sdk2.methods` → `m` | `/sdk2/{{ m.category }}/{{ m.slug }}/` |
+| `src/sdk2/examples.njk` | — | `/sdk2/examples/` |
+| `src/sdk2/example-group.njk` | `sdk2.groups` → `g` | `/sdk2/examples/{{ g.slug }}/` |
+| `src/sdk2/example.njk` | `sdk2.examples` → `e` | `/sdk2/examples/{{ e.group }}/{{ e.stem }}/` |
+
+- **Данные генерируются** из `docs/_data.py` и `docs/_examples.py` скриптом
+  `python tools/export-sdk2-data.py` → `src/_data/sdk2.json` (коммитится; при обновлении
+  исходников docs перезапустите скрипт). Исходный код примеров подтягивается из
+  `gf/pioneer-sdk2-example/`.
+- `title`/`description`/`crumbs` для этих страниц считаются в `src/_data/eleventyComputed.js`
+  по alias пагинации (`m`/`cat`/`g`/`e`) — front matter Eleventy шаблонит только `permalink`.
+- Стили — `src/css/_sdk2.css` (подключён в `src/css/index.css`). Точки входа: баннер на
+  главной (`layout-index.njk`), пункт в `hamburger-panel.njk`, ссылки в уроках 5 и 12,
+  записи в `sitemap.njk`. В `lessons.json` **не добавлять**.
 
 ## 🔧 Команды (Node ≥ 18, Windows PowerShell)
 
@@ -66,12 +91,14 @@ npm run deploy              # деплой (powershell deploy.ps1), есть -Dr
 src/*.md                     # 10 уроков 01-overview … 10-links (контент — предсобранный HTML)
 src/404.md                   # страница 404 (permalink /404.html; nginx error_page)
 src/examples/*.md            # 8 страниц разбора примеров (permlinks /examples/<slug>/)
+src/sdk2/*.njk               # справочник SDK2 (/sdk2/...; пагинация по src/_data/sdk2.json)
 src/index.njk                # точка входа главной (layout-index.njk)
 src/robots.txt.njk           # robots.txt; src/sitemap.njk → /sitemap.xml
 src/_includes/layout.njk     # шаблон страницы документации; layout-index.njk — главная
 src/_includes/partials/      # site-footer.njk, hamburger-panel.njk (общие для обоих layout'ов)
 src/_data/                   # site.json, lessonsData.cjs, examples.cjs (слаги разборов),
-                             # eleventyComputed.js, assetsHash.json (ГЕНЕРИРУЕТСЯ)
+                             # sdk2.json (ГЕНЕРИРУЕТСЯ из docs/), eleventyComputed.js,
+                             # assetsHash.json (ГЕНЕРИРУЕТСЯ)
 src/css/index.css            # точка входа CSS (12 partials в фиксированном порядке)
 src/js/script.js             # точка входа JS (ESM); initApp() на DOM-ready
 src/js/theme-init.js         # мини-скрипт anti-FOUC (iife, подключается в <head>, НЕ модуль)

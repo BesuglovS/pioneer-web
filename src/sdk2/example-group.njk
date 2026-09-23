@@ -1,0 +1,28 @@
+---
+layout: layout.njk
+pagination:
+    data: sdk2.groups
+    size: 1
+    alias: g
+permalink: "/sdk2/examples/{{ g.slug }}/"
+eleventyExcludeFromCollections: true
+---
+
+<div class="sdk-cat-head">
+    <div class="sdk-cat-icon">{{ g.icon }}</div>
+    <div>
+        <h1>{{ g.title }}</h1>
+        <p class="lead">{{ g.description | safe }}</p>
+        <div class="sdk-cat-meta"><span>{{ g.folder }}/</span><span>{{ g.count }} примеров</span></div>
+    </div>
+</div>
+
+<div class="sdk-grid">
+    {% for e in g.examples %}
+    <a class="sdk-card sdk-card--method" href="{{ e.url }}">
+        <div class="sdk-card-head"><code class="sdk-method-name">{{ e.file }}</code></div>
+        <p>{{ e.summary | safe }}</p>
+        <div class="sdk-card-sig">{{ e.title }}</div>
+    </a>
+    {% endfor %}
+</div>

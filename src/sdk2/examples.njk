@@ -1,0 +1,45 @@
+---
+layout: layout.njk
+title: "Обзор примеров pioneer_sdk2"
+description: "Скрипты репозитория pioneer-sdk2-example, сгруппированные по назначению, с подробным разбором."
+permalink: "/sdk2/examples/"
+eleventyExcludeFromCollections: true
+crumbs:
+    - { label: "Справочник pioneer_sdk2", url: "/sdk2/" }
+    - { label: "Примеры" }
+---
+
+<div class="sdk-cat-head">
+    <div class="sdk-cat-icon">🗂️</div>
+    <div>
+        <h1>Обзор примеров</h1>
+        <p class="lead">Скрипты репозитория <code>pioneer-sdk2-example</code>, сгруппированные по назначению.
+        Нажмите на скрипт, чтобы открыть подробное описание. Запускайте файлы из соответствующей
+        директории: <code>python3 &lt;файл&gt;.py</code>.</p>
+        <div class="sdk-cat-meta"><span>{{ sdk2.stats.examples }} примеров</span><span>{{ sdk2.stats.groups }} групп</span></div>
+    </div>
+</div>
+
+{% for g in sdk2.groups %}
+<section class="sdk-example-block">
+    <div class="sdk-example-head">
+        <span class="sdk-example-icon">{{ g.icon }}</span>
+        <div>
+            <h2><a class="plain" href="/sdk2/examples/{{ g.slug }}/">{{ g.title }}</a></h2>
+            <p>{{ g.description | safe }}</p>
+            <code class="sdk-path">{{ g.folder }}/</code>
+            <span class="sdk-count-text">{{ g.count }} скриптов</span>
+        </div>
+    </div>
+    <ul class="sdk-script-list">
+        {% for e in g.examples %}
+        <li><a href="{{ e.url }}"><code>{{ e.file }}</code></a><span>{{ e.summary | safe }}</span></li>
+        {% endfor %}
+    </ul>
+</section>
+{% endfor %}
+
+<div class="sdk-callout">
+    <strong>Видеопоток.</strong> <code>ImageViewer</code> публикует обработанный кадр по имени потока.
+    Поток доступен по адресу <code>{{ sdk2.project.rtsp }}</code>.
+</div>

@@ -1,0 +1,94 @@
+---
+layout: layout.njk
+pagination:
+    data: sdk2.examples
+    size: 1
+    alias: e
+permalink: "/sdk2/examples/{{ e.group }}/{{ e.stem }}/"
+eleventyExcludeFromCollections: true
+---
+
+<div class="method-head">
+    <div class="badges">
+        <span class="badge badge-cat">{{ e.group_icon }} {{ e.group_title }}</span>
+        <span class="badge badge-kind">{{ e.file }}</span>
+    </div>
+    <h1>{{ e.title }}</h1>
+    <div class="signature"><code>{{ e.path | e }}</code></div>
+    <p class="lead">{{ e.summary | safe }}</p>
+</div>
+
+<section class="prose">
+    <p>{{ e.description | safe }}</p>
+
+    {% if e.steps.length %}
+    <h2 id="steps">Как работает</h2>
+    <ol class="sdk-steps">{% for s in e.steps %}<li>{{ s | safe }}</li>{% endfor %}</ol>
+    {% endif %}
+
+    {% if e.method_links.length %}
+    <h2 id="methods">Используемые методы SDK</h2>
+    <div class="chips">{% for s in e.method_links %}<a class="chip" href="{{ s.url }}">{{ s.display }}</a>{% endfor %}</div>
+    {% endif %}
+
+    {% if e.constants.length %}
+    <h2 id="constants">Ключевые параметры</h2>
+    <div class="tablewrap">
+        <table class="sdk-params">
+            <thead><tr><th>Параметр</th><th>Значение</th><th>Описание</th></tr></thead>
+            <tbody>
+                {% for c in e.constants %}
+                <tr><td><code>{{ c.name | e }}</code></td><td class="mono">{{ c.value | e }}</td><td>{{ c.desc | safe }}</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    {% if e.run.length %}
+    <h2 id="run">Запуск</h2>
+    <div class="codewrap"><pre><code data-lang="bash">{{ e.run | join('\n') | e }}</code></pre></div>
+    {% endif %}
+
+    {% if e.result.length %}
+    <h2 id="result">Результат</h2>
+    <ul class="notes">{% for x in e.result %}<li>{{ x | safe }}</li>{% endfor %}</ul>
+    {% endif %}
+
+    {% if e.streams.length %}
+    <h2 id="streams">Видеопотоки</h2>
+    <div class="chips">{% for s in e.streams %}<span class="chip mono">{{ s | e }}</span>{% endfor %}</div>
+    {% endif %}
+
+    {% if e.safety.length %}
+    <h2 id="safety">Безопасность</h2>
+    <div class="sdk-callout"><ul>{% for x in e.safety %}<li>{{ x | safe }}</li>{% endfor %}</ul></div>
+    {% endif %}
+
+    {% if e.notes.length %}
+    <h2 id="notes">Примечания</h2>
+    <ul class="notes">{% for x in e.notes %}<li>{{ x | safe }}</li>{% endfor %}</ul>
+    {% endif %}
+
+    {% if e.prereq.length %}
+    <h2 id="prereq">Требования</h2>
+    <ul class="notes">{% for x in e.prereq %}<li>{{ x | safe }}</li>{% endfor %}</ul>
+    {% endif %}
+
+    {% if e.source %}
+    <h2 id="source">Полный исходный код</h2>
+    <details class="sdk-source">
+        <summary>Показать {{ e.file | e }}</summary>
+        <div class="codewrap"><pre><code data-lang="python">{{ e.source | e }}</code></pre></div>
+    </details>
+    {% endif %}
+</section>
+
+<div class="bottom-controls">
+    {% if e.prev %}
+    <a class="bottom-link bottom-link--prev" href="{{ e.prev.url }}"><span class="bottom-link__label">← Предыдущий</span><span class="bottom-link__title">{{ e.prev.file }}</span></a>
+    {% else %}<span class="bottom-link bottom-link--empty"></span>{% endif %}
+    {% if e.next %}
+    <a class="bottom-link bottom-link--next" href="{{ e.next.url }}"><span class="bottom-link__label">Следующий →</span><span class="bottom-link__title">{{ e.next.file }}</span></a>
+    {% else %}<span class="bottom-link bottom-link--empty"></span>{% endif %}
+</div>

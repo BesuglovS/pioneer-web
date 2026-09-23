@@ -11,4 +11,18 @@ eleventyExcludeFromCollections: true
 {% for slug in examples.links %}
   <url><loc>{{ site.url }}/examples/{{ slug }}/</loc></url>
 {% endfor %}
+  <url><loc>{{ site.url }}/sdk2/</loc></url>
+  <url><loc>{{ site.url }}/sdk2/examples/</loc></url>
+{% for cat in sdk2.categories %}
+  <url><loc>{{ site.url }}/sdk2/{{ cat.slug }}/</loc></url>
+{% endfor %}
+{% for m in sdk2.methods %}
+  <url><loc>{{ site.url }}{{ m.url }}</loc></url>
+{% endfor %}
+{% for g in sdk2.groups %}
+  <url><loc>{{ site.url }}/sdk2/examples/{{ g.slug }}/</loc></url>
+{% endfor %}
+{% for e in sdk2.examples %}
+  <url><loc>{{ site.url }}{{ e.url }}</loc></url>
+{% endfor %}
 </urlset>

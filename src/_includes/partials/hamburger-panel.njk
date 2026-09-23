@@ -5,5 +5,6 @@
         {% for p in lessonsData.lessons %}
         <li><a class="hamburger-link" href="/{{ p.number | pad2 }}-{{ p.slug }}/">{{ p.number }}. {{ p.title }}</a></li>
         {% endfor %}
+        <li><a class="hamburger-link" href="/sdk2/">📖 Справочник pioneer_sdk2 ({{ sdk2.stats.methods }} методов)</a></li>
     </ul>
 </div>

@@ -1,0 +1,90 @@
+---
+layout: layout.njk
+pagination:
+    data: sdk2.methods
+    size: 1
+    alias: m
+permalink: "/sdk2/{{ m.category }}/{{ m.slug }}/"
+eleventyExcludeFromCollections: true
+---
+
+<div class="method-head">
+    <div class="badges">
+        <span class="badge badge-owner">{{ m.owner }}</span>
+        <span class="badge badge-cat">{{ m.cat_icon }} {{ m.cat_title }}</span>
+        <span class="badge badge-kind">{{ m.kind_label }}</span>
+        {% if not m.example_file %}<span class="badge badge-muted">нет примера</span>{% endif %}
+    </div>
+    <h1>{{ m.display }}</h1>
+    <div class="signature"><code>{{ m.signature | e }}</code></div>
+    <p class="lead">{{ m.summary | safe }}</p>
+</div>
+
+<section class="prose">
+    <p>{{ m.description | safe }}</p>
+
+    {% if m.values.length %}
+    <h2 id="values">Значения</h2>
+    <div class="tablewrap">
+        <table class="sdk-params">
+            <thead><tr><th>Константа</th><th>Значение</th><th>Описание</th></tr></thead>
+            <tbody>
+                {% for v in m.values %}
+                <tr><td><code>{{ v.name | e }}</code></td><td class="mono">{{ v.value | e }}</td><td>{{ v.desc | safe }}</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    {% if m.params.length %}
+    <h2 id="params">Параметры</h2>
+    <div class="tablewrap">
+        <table class="sdk-params">
+            <thead><tr><th>Параметр</th><th>Тип</th><th>По умолчанию</th><th>Описание</th></tr></thead>
+            <tbody>
+                {% for p in m.params %}
+                <tr><td><code>{{ p.name | e }}</code></td><td class="mono">{{ p.type | e }}</td><td class="mono">{{ p.default | e }}</td><td>{{ p.desc | safe }}</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    {% if m.returns %}
+    <h2 id="returns">Возвращает</h2>
+    <p class="returns"><code>{{ m.returns.type | e }}</code> — {{ m.returns.desc | safe }}</p>
+    {% endif %}
+
+    {% if m.raises.length %}
+    <h2 id="raises">Исключения</h2>
+    <ul class="raises">{% for x in m.raises %}<li>{{ x | safe }}</li>{% endfor %}</ul>
+    {% endif %}
+
+    {% if m.example %}
+    <h2 id="example">Пример</h2>
+    <div class="codewrap">
+        {% if m.example_file %}<div class="code-src">{{ m.example_file | e }}</div>{% endif %}
+        <pre><code data-lang="python">{{ m.example | e }}</code></pre>
+    </div>
+    {% endif %}
+
+    {% if m.notes.length %}
+    <h2 id="notes">Примечания</h2>
+    <ul class="notes">{% for x in m.notes %}<li>{{ x | safe }}</li>{% endfor %}</ul>
+    {% endif %}
+
+    {% if m.see_links.length %}
+    <h2 id="see">См. также</h2>
+    <div class="chips">{% for s in m.see_links %}<a class="chip" href="{{ s.url }}">{{ s.display }}</a>{% endfor %}</div>
+    {% endif %}
+</section>
+
+<div class="bottom-controls">
+    {% if m.prev %}
+    <a class="bottom-link bottom-link--prev" href="{{ m.prev.url }}"><span class="bottom-link__label">← Предыдущий</span><span class="bottom-link__title">{{ m.prev.display }}</span></a>
+    {% else %}<span class="bottom-link bottom-link--empty"></span>{% endif %}
+    {% if m.next %}
+    <a class="bottom-link bottom-link--next" href="{{ m.next.url }}"><span class="bottom-link__label">Следующий →</span><span class="bottom-link__title">{{ m.next.display }}</span></a>
+    {% else %}<span class="bottom-link bottom-link--empty"></span>{% endif %}
+</div>

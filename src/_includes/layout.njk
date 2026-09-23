@@ -51,16 +51,24 @@
         <main class="main-content wrap" id="main-content">
             <nav class="breadcrumb-nav" aria-label="Хлебные крошки">
                 <a href="{{ '/' | relUrl }}">Главная</a>
+                {% if crumbs %}
+                {% for c in crumbs %}
+                <span class="breadcrumb-sep">›</span>
+                {% if c.url %}<a href="{{ c.url }}">{{ c.label }}</a>{% else %}<span class="breadcrumb-current">{{ c.label }}</span>{% endif %}
+                {% endfor %}
+                {% else %}
                 <span class="breadcrumb-sep">›</span>
                 {% if currentSection %}<span class="breadcrumb-section">{{ currentSection.title }}</span>{% endif %}
                 <span class="breadcrumb-sep">›</span>
                 <span class="breadcrumb-current">{{ title }}</span>
+                {% endif %}
             </nav>
 
             <article class="page-content">
                 {{ content | safe }}
             </article>
 
+            {% if prevPage or nextPage %}
             <div class="bottom-controls" id="bottomControls">
                 {% if prevPage %}
                 <a class="bottom-link bottom-link--prev" href="{{ prevPage.url }}"><span class="bottom-link__label">← Предыдущая</span><span class="bottom-link__title">{{ prevPage.title }}</span></a>
@@ -69,6 +77,7 @@
                 <a class="bottom-link bottom-link--next" href="{{ nextPage.url }}"><span class="bottom-link__label">Следующая →</span><span class="bottom-link__title">{{ nextPage.title }}</span></a>
                 {% else %}<span class="bottom-link bottom-link--empty"></span>{% endif %}
             </div>
+            {% endif %}
 
             {% include "partials/site-footer.njk" %}
         </main>

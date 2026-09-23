@@ -1,0 +1,31 @@
+---
+layout: layout.njk
+pagination:
+    data: sdk2.categories
+    size: 1
+    alias: cat
+permalink: "/sdk2/{{ cat.slug }}/"
+eleventyExcludeFromCollections: true
+---
+
+<div class="sdk-cat-head">
+    <div class="sdk-cat-icon">{{ cat.icon }}</div>
+    <div>
+        <h1>{{ cat.title }}</h1>
+        <p class="lead">{{ cat.description | safe }}</p>
+        <div class="sdk-cat-meta"><span>{{ cat.owner }}</span><span>{{ cat.count }} методов</span></div>
+    </div>
+</div>
+
+<div class="sdk-grid">
+    {% for m in cat.methods %}
+    <a class="sdk-card sdk-card--method" href="{{ m.url }}">
+        <div class="sdk-card-head">
+            <code class="sdk-method-name">{{ m.display }}</code>
+            {% if m.kind != 'method' %}<span class="sdk-tag">{{ m.kind }}</span>{% endif %}
+        </div>
+        <p>{{ m.summary | safe }}</p>
+        <div class="sdk-card-sig"><code>{{ m.signature | e }}</code></div>
+    </a>
+    {% endfor %}
+</div>

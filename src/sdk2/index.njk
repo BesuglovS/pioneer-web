@@ -1,0 +1,85 @@
+---
+layout: layout.njk
+title: "Справочник pioneer_sdk2"
+description: "Полный справочник по библиотекам pioneer_sdk2 и pioneer_rknn: методы, классы, перечисления и разборы примеров репозитория pioneer-sdk2-example."
+permalink: "/sdk2/"
+eleventyExcludeFromCollections: true
+---
+
+<div class="sdk-hero">
+    <div class="badges">
+        <span class="badge badge-owner">{{ sdk2.project.sdk_version }}</span>
+        <span class="badge badge-cat">{{ sdk2.project.board }}</span>
+        <span class="badge badge-kind">{{ sdk2.project.python }}</span>
+    </div>
+    <h1>Справочник по <span class="accent">pioneer_sdk2</span></h1>
+    <p class="lead">{{ sdk2.project.description | safe }}</p>
+    <div class="hero-links">
+        <a class="btn" href="/sdk2/flight/">Начать с управления полётом</a>
+        <a class="btn ghost" href="/sdk2/examples/">Обзор примеров</a>
+    </div>
+    <div class="sdk-stats">
+        <div><strong>{{ sdk2.stats.methods }}</strong><span>страниц методов</span></div>
+        <div><strong>{{ sdk2.stats.categories }}</strong><span>категорий</span></div>
+        <div><strong>{{ sdk2.stats.examples }}</strong><span>примеров</span></div>
+    </div>
+</div>
+
+<section>
+    <h2 id="categories">Категории методов</h2>
+    <div class="sdk-grid">
+        {% for cat in sdk2.categories %}
+        <a class="sdk-card" href="/sdk2/{{ cat.slug }}/">
+            <div class="sdk-card-head"><span class="sdk-card-icon">{{ cat.icon }}</span><span class="sdk-count">{{ cat.count }}</span></div>
+            <h3>{{ cat.title }}</h3>
+            <p>{{ cat.description | safe }}</p>
+            <div class="sdk-chips">
+                {% for m in cat.methods %}<span class="sdk-chip">{{ m.display }}</span>{% endfor %}
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+
+<section>
+    <h2 id="quickstart">Быстрый старт</h2>
+    <div class="sdk-two-col">
+        <div>
+            <p>Все примеры рассчитаны на <strong>{{ sdk2.project.python }}</strong> и установленный пакет
+            <code>pioneer_sdk2</code>. Подключение к борту по SSH:</p>
+            <ul>
+                <li>Адрес: <code>{{ sdk2.project.ssh }}</code></li>
+                <li>Примеры на борту: <code>{{ sdk2.project.examples_path }}</code></li>
+                <li>RTSP-потоки: <code>{{ sdk2.project.rtsp }}</code></li>
+            </ul>
+            <p>Минимальный полётный скрипт:</p>
+        </div>
+        <div class="codewrap"><pre><code data-lang="python">from pioneer_sdk2 import Pioneer
+import time
+
+drone = Pioneer()
+
+try:
+    drone.arm()          # запуск моторов
+    drone.takeoff()      # взлёт
+    time.sleep(3)
+    drone.land()         # посадка
+finally:
+    drone.close_connection()</code></pre></div>
+    </div>
+</section>
+
+<section>
+    <h2 id="requirements">Требования</h2>
+    <ul>
+        <li>Python 3.12 и установленный <code>pioneer_sdk2</code>.</li>
+        <li><code>opencv-python</code> и <code>numpy</code> для примеров камеры и ArUco.</li>
+        <li><code>pioneer_rknn</code> для примеров <code>human_tracking</code>.</li>
+        <li>Примеры с <code>ImageViewer</code> требуют конфигурации камеры с драйвером <code>gstreamer</code>.</li>
+    </ul>
+    <div class="sdk-callout">
+        <strong>Безопасность.</strong> Для полётных примеров проверьте зону полёта, заряд аккумулятора,
+        систему навигации и возможность аварийной посадки. Большинство скриптов закрывают соединение
+        в <code>finally</code>, но физическая безопасность зависит от подготовки площадки.
+    </div>
+</section>
