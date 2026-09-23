@@ -20,8 +20,8 @@ pageSlug: "launch"
 <h2 id="connect">Подключение — общая база для всех способов</h2>
 <p>Независимо от способа запуска первым шагом всегда будет подключение к коптеру:</p>
 <ol>
-<li>Подключите компьютер к Wi-Fi точке доступа <strong>PMINI2</strong>, пароль <code>geoscan123</code>.</li>
-<li>Коптер в этой сети получит адрес <code>10.42.0.1</code>.</li>
+<li>Подключите компьютер к Wi-Fi точке доступа <strong>PMINI2-…</strong> (точное имя — из случайного суффикса, например <code>PMINI2-DuqIx…</code>), пароль <code>geoscan123</code>.</li>
+<li>Коптер в этой сети получит адрес <code>10.42.0.1</code> (при подключении по USB-кабелю — <code>10.42.1.1</code>).</li>
 <li>Проверьте соединение, открыв в браузере <a href="http://10.42.0.1:9090/" target="_blank" rel="noopener">http://10.42.0.1:9090/</a> — должен открыться портал Pioneer Code.</li>
 </ol>
 <p>Подробно об этом — на странице <a href="/02-start/">«Быстрый старт»</a>.</p>
@@ -30,7 +30,7 @@ pageSlug: "launch"
 <p>Самый простой способ для занятий: всё работает в браузере, код хранится на борту.</p>
 <ol>
 <li>Откройте <a href="http://10.42.0.1:9090/" target="_blank" rel="noopener">http://10.42.0.1:9090/</a> — портал Pioneer Code.</li>
-<li>Выберите <strong>CodeOss</strong> (порт <code>http://10.42.0.1:2020/</code>) — редактор на базе VS Code.</li>
+<li>Выберите <strong>CodeOss</strong> (адрес <code>http://10.42.0.1:9999/</code>) — редактор на базе VS Code. Порт <code>2020</code> — это Bricks, не путайте.</li>
 <li>Создайте файл <code>flight.py</code> и напишите программу на Python.</li>
 <li>Запустите её во встроенном терминале CodeOss командой <code>python3 flight.py</code>.</li>
 </ol>

@@ -130,7 +130,7 @@ cam = Camera(CameraType.MAIN)            <span class="tok-c"># MAIN / OPT (из 
 frame = cam.get_cv_frame(timeout=<span class="tok-n">5.0</span>)   <span class="tok-c"># numpy BGR</span>
 
 iv = ImageViewer()                       <span class="tok-c"># публикация в RTSP mediamtx</span>
-iv.imshow(<span class="tok-s">"test"</span>, frame)                 <span class="tok-c"># rtsp://localhost:8554/test</span>
+iv.imshow(<span class="tok-s">"test"</span>, frame)                 <span class="tok-c"># RTSP: rtsp://10.42.0.1:8554/test, WebRTC: http://10.42.0.1:8889/test</span>
 
 rec = RecorderControl()
 rec.get_camera_recording_configs(CameraType.MAIN)   <span class="tok-c"># [RecordingConfig(w,h,fps)]</span>

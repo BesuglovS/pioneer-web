@@ -1,7 +1,7 @@
 # AGENTS.md — Инструкции для ИИ-ассистентов
 
 Статический сайт-документация «Программирование Пионер Мини 2 и Пионер Базовый»
-(10 уроков + 8 страниц разбора примеров, 7 разделов, русский язык).
+(22 урока + 8 страниц разбора примеров, 12 разделов, русский язык).
 Сайт генерируется **Eleventy (11ty) v3**; интерактив — vanilla JS (ES-модули, без фреймворков).
 Серверной части нет — чистая статика + nginx. Метаданные уроков — в `lessons.json`.
 Прод: `https://pioneer.nayanovaacademy.ru`.
@@ -88,7 +88,7 @@ npm run deploy              # деплой (powershell deploy.ps1), есть -Dr
 ## 🏗 Структура
 
 ```
-src/*.md                     # 10 уроков 01-overview … 10-links (контент — предсобранный HTML)
+src/*.md                     # 22 урока 01-overview … 22-glossary (контент — предсобранный HTML)
 src/404.md                   # страница 404 (permalink /404.html; nginx error_page)
 src/examples/*.md            # 8 страниц разбора примеров (permlinks /examples/<slug>/)
 src/sdk2/*.njk               # справочник SDK2 (/sdk2/...; пагинация по src/_data/sdk2.json)
@@ -105,7 +105,7 @@ src/js/theme-init.js         # мини-скрипт anti-FOUC (iife, подкл
 src/js/modules/*.js          # theme, hamburger, scroll-progress, toc, search, keyboard-nav,
                              # scroll-restore, sw-register, utils
 src/js/config/*.js           # constants.js, courseData.js (ГЕНЕРИРУЕТСЯ из lessons.json)
-lessons.json                 # метаданные 10 уроков + секции (источник истины)
+lessons.json                 # метаданные 22 уроков + секции (источник истины)
 eleventy.config.mjs          # конфиг; md-passthrough; фильтры relUrl/pad2/json; коллекции
 build-*.mjs                  # скрипты сборки (clean, config-meta, css, js, assets-hash, sw)
 deploy.ps1                   # деплой по SSH (DryRun/SkipBuild; guard на DEPLOY_REMOTE_PATH)

@@ -107,6 +107,96 @@ export const PAGES = [
     "description": "Расширенный справочник по pioneer_sdk2 и pioneer_rknn: полётные команды, телеметрия, события, камеры, сервопривод, RC-каналы, нейросети на NPU",
     "duration": 40,
     "complexity": "intermediate"
+  },
+  {
+    "number": 13,
+    "url": "/13-safety/",
+    "title": "Безопасность и регламенты",
+    "section": "operation",
+    "description": "Предполётный чек-лист, правила безопасных полётов, аварийные процедуры и требования воздушного законодательства",
+    "duration": 15,
+    "complexity": "beginner"
+  },
+  {
+    "number": 14,
+    "url": "/14-battery/",
+    "title": "Аккумулятор и зарядка",
+    "section": "operation",
+    "description": "Li-Po АКБ Пионера: зарядка, хранение, транспортировка, пороги напряжения и события LOW_VOLTAGE/LOW_CHARGE",
+    "duration": 15,
+    "complexity": "beginner"
+  },
+  {
+    "number": 15,
+    "url": "/15-calibration/",
+    "title": "Калибровка и обслуживание",
+    "section": "operation",
+    "description": "Калибровка IMU и компаса, пульта, сервопривода и дальномера; обновление прошивки автопилота и параметров, обслуживание",
+    "duration": 20,
+    "complexity": "intermediate"
+  },
+  {
+    "number": 16,
+    "url": "/16-troubleshooting/",
+    "title": "Диагностика и FAQ",
+    "section": "help",
+    "description": "Типовые проблемы Пионер Мини 2: Wi-Fi, SSH, видеопоток, NPU, двигатели, plazlink; команды диагностики на борту",
+    "duration": 25,
+    "complexity": "intermediate"
+  },
+  {
+    "number": 17,
+    "url": "/17-network/",
+    "title": "Сеть и PioNet",
+    "section": "help",
+    "description": "Режимы Wi-Fi (точка доступа, клиент, USB), PioNet, netconfig, статический IP, смена SSID и пароля, карта портов",
+    "duration": 20,
+    "complexity": "intermediate"
+  },
+  {
+    "number": 18,
+    "url": "/18-payload/",
+    "title": "Полезная нагрузка",
+    "section": "advanced",
+    "description": "Разъёмы Type-C и крепления LEGO, флаги board_config (ranger/grab/cargo/flashlight), управление нагрузкой из pioneer_sdk2",
+    "duration": 20,
+    "complexity": "intermediate"
+  },
+  {
+    "number": 19,
+    "url": "/19-swarm/",
+    "title": "Роевые полёты",
+    "section": "advanced",
+    "description": "Организация групповых полётов: адресация, синхронизация, планирование каналов Wi-Fi, координация и безопасность",
+    "duration": 25,
+    "complexity": "advanced"
+  },
+  {
+    "number": 20,
+    "url": "/20-migration/",
+    "title": "Миграция SDK1 → SDK2",
+    "section": "advanced",
+    "description": "Переход со старой библиотеки pioneer_sdk на pioneer_sdk2: карта методов, пример rc_sdk1_to_sdk2, класс VideoStream",
+    "duration": 20,
+    "complexity": "intermediate"
+  },
+  {
+    "number": 21,
+    "url": "/21-custom-models/",
+    "title": "Свои нейросети на NPU",
+    "section": "advanced",
+    "description": "Обучение, экспорт в ONNX (opset=19), конвертация в RKNN и регистрация собственной модели в model-registry",
+    "duration": 30,
+    "complexity": "advanced"
+  },
+  {
+    "number": 22,
+    "url": "/22-glossary/",
+    "title": "Глоссарий и карта системы",
+    "section": "reference",
+    "description": "Термины, аббревиатуры, карта портов, служб и ключевых путей бортовой системы Пионер Мини 2",
+    "duration": 10,
+    "complexity": "beginner"
   }
 ];
 
@@ -150,5 +240,25 @@ export const SECTIONS = [
     "id": "deep",
     "name": "Дополнительно",
     "icon": "🔬"
+  },
+  {
+    "id": "operation",
+    "name": "Эксплуатация",
+    "icon": "🦺"
+  },
+  {
+    "id": "help",
+    "name": "Помощь",
+    "icon": "🧭"
+  },
+  {
+    "id": "advanced",
+    "name": "Продвинутое",
+    "icon": "🚀"
+  },
+  {
+    "id": "reference",
+    "name": "Справочник",
+    "icon": "📖"
   }
 ];

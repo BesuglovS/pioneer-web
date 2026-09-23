@@ -11,6 +11,7 @@
 """
 
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -44,6 +45,21 @@ def group_url(slug):
 
 
 KIND_LABEL = {"method": "метод", "class": "класс", "enum": "перечисление"}
+
+
+def normalize_ports(obj):
+    """Приводит порты видеотрансляции к фактической конфигурации mediamtx:
+    RTSP слушает 8554, а 8889 — это WebRTC. Официальные примеры иногда
+    указывают ``rtsp://…:8889`` — заменяем на корректный порт RTSP."""
+    if isinstance(obj, dict):
+        return {k: normalize_ports(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [normalize_ports(v) for v in obj]
+    if isinstance(obj, str):
+        s = re.sub(r"(rtsp://[^\s\"']*?):8889", r"\1:8554", obj)
+        s = s.replace("10.42.0.1:8889", "10.42.0.1:8554").replace("ip:8889", "ip:8554")
+        return s
+    return obj
 
 CATS = {c["slug"]: c for c in D.CATEGORIES}
 CAT_ORDER = [c["slug"] for c in D.CATEGORIES]
@@ -240,6 +256,7 @@ def main():
         "groups": build_groups(),
         "examples": build_examples(),
     }
+    data = normalize_ports(data)
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(
         json.dumps(data, ensure_ascii=False, indent=1),

@@ -17,7 +17,7 @@ permalink: "/examples/camera/"
 <li><code>set_camera_angle.py</code> — поворот сервопривода камеры.</li>
 <li><code>take_photo_angles.py</code> — фото при углах −25°, 0° и 25°.</li>
 </ul>
-<p>Примеры с кадрами и <code>ImageViewer</code> запускаются на борту Мини 2; потоки открываются на ПК (VLC, ffplay) по адресам вида <code>rtsp://10.42.0.1:8889/video/</code>.</p>
+<p>Примеры с кадрами и <code>ImageViewer</code> запускаются на борту Мини 2; потоки открываются на ПК (VLC, ffplay) по адресам вида <code>rtsp://10.42.0.1:8554/video/</code>.</p>
 
 <h2 id="c-frames">get_frames_from_camera.py — базовый цикл кадра</h2>
 <p>Компактный пример знакомит с двумя классами SDK: <strong>Camera</strong> и <strong>ImageViewer</strong>:</p>
@@ -63,11 +63,12 @@ cycle_time = <span class="tok-n">30</span>                              <span cl
                                                  <span class="tok-c"># frame - переменная с ранее полученным кадром</span>
                                                  <span class="tok-c"># fps=30 - количество кадров в секунду при передаче видео</span>
 
-                                                 <span class="tok-c"># трансляция выполняется по адресу: 10.42.0.1:8889/video</span></code></pre></div>
+                                                 <span class="tok-c"># трансляция выполняется по адресу: 10.42.0.1:8554/video</span>
+</code></pre></div>
 <p>Условие <code>time.time() - my_time &lt; cycle_time</code> — простая ограниченная по времени трансляция (30 с); после выхода <code>viewer.close()</code> останавливает поток.</p>
 
 <h2 id="c-servo">set_camera_angle.py — сервокамера</h2>
-<p>Подвес камеры Мини 2 качается в диапазоне ±25°. Класс <strong>ServoCamera</strong> скрывает протокол и позволяет повернуть камеру одной командой:</p>
+<p>Подвес камеры Мини 2 поворачивается в диапазоне <strong>−80°…+30°</strong> (по данным <code>board_config.json</code>). В примерах ниже используются ±25° как безопасный учебный диапазон. Класс <strong>ServoCamera</strong> скрывает протокол и позволяет повернуть камеру одной командой:</p>
 <div class="codewrap"><pre><code data-lang="python"><span class="tok-k">from</span> pioneer_sdk2 <span class="tok-k">import</span> ServoCamera <span class="tok-c"># импортируем класс ServoCamera из библиотеки pioneer_sdk2</span>
 <span class="tok-k">import</span> time                          <span class="tok-c"># библиотека time содержит функции для работы со временем</span>
 
@@ -108,9 +109,9 @@ camera.stop()                   <span class="tok-c"># останавливаем
 <p>Скрипт создаёт <code>data.yml</code> — файл с параметрами камеры, без которого координаты ArUco-меток считаются неточно. Порядок работы из README:</p>
 <ol>
 <li>Напечатайте <a href="https://raw.githubusercontent.com/opencv/opencv/master/doc/pattern.png" target="_blank" rel="noopener">шаблон OpenCV</a> (шахматная доска 6×9 внутренних углов) на А4 без масштабирования.</li>
-<li>Подключите дрон и запустите <code>python3 camera_calibration.py</code>; откройте поток <code>rtsp://10.42.0.1:8889/calibration/</code>.</li>
+<li>Подключите дрон и запустите <code>python3 camera_calibration.py</code>; откройте поток <code>rtsp://10.42.0.1:8554/calibration/</code>.</li>
 <li>Сделайте 10–15 снимков с разных ракурсов: в терминале вводите <code>1</code> + Enter для снимка; когда снимков достаточно — <code>q</code> + Enter.</li>
-<li>Проверьте найденные углы в потоке <code>rtsp://10.42.0.1:8889/calibration_result/</code>.</li>
+<li>Проверьте найденные углы в потоке <code>rtsp://10.42.0.1:8554/calibration_result/</code>.</li>
 <li>Дождитесь сохранения <code>data.yml</code> рядом со скриптом.</li>
 </ol>
 <p>Внутри всё делает OpenCV: ищутся углы доски, уточняются субпиксельно, затем вычисляется матрица камеры. Настройки поиска:</p>
@@ -125,7 +126,8 @@ camera.stop()                   <span class="tok-c"># останавливаем
         cv2.CALIB_CB_ADAPTIVE_THRESH                        <span class="tok-c"># используем адаптивную обработку изображения</span>
         + cv2.CALIB_CB_FAST_CHECK                           <span class="tok-c"># ускоряем проверку наличия шахматной доски</span>
         + cv2.CALIB_CB_NORMALIZE_IMAGE                      <span class="tok-c"># нормализуем изображение для лучшего поиска углов</span>
-    )</code></pre></div>
+    )
+</code></pre></div>
 <p>Углы ищутся с флагами <code>ADAPTIVE_THRESH</code>/<code>FAST_CHECK</code>/<code>NORMALIZE_IMAGE</code>, критерий уточняет позиции до 0,001. Итоговая калибровка — классический <code>cv2.calibrateCamera</code>:</p>
 <div class="codewrap"><pre><code data-lang="python">    <span class="tok-k">if</span> image_size <span class="tok-k">is</span> <span class="tok-k">None</span> <span class="tok-k">or</span> <span class="tok-k">not</span> imgpoints:                 <span class="tok-c"># проверяем, что есть данные для калибровки</span>
         <span class="tok-k">raise</span> RuntimeError(<span class="tok-s">"Не удалось найти углы шахматной доски для калибровки"</span>)
@@ -141,5 +143,6 @@ camera.stop()                   <span class="tok-c"># останавливаем
         dist_coeffs                                         <span class="tok-c"># передаем коэффициенты искажений для заполнения</span>
     )
 
-    <span class="tok-k">return</span> mtx, dist                                        <span class="tok-c"># возвращаем матрицу камеры и коэффициенты искажений</span></code></pre></div>
+    <span class="tok-k">return</span> mtx, dist                                        <span class="tok-c"># возвращаем матрицу камеры и коэффициенты искажений</span>
+</code></pre></div>
 <p>Матрица и коэффициенты сохраняются через <code>cv2.FileStorage</code> в <code>data.yml</code>; файл лежит рядом со скриптом (<code>Path(__file__).with_name("data.yml")</code>), поэтому примеры можно запускать из любого каталога. Скрипты <a href="/examples/aruco/">aruco_examples</a> читают этот файл.</p>

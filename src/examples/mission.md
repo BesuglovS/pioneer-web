@@ -51,7 +51,7 @@ drone.subscribe(point_reached, pioneer_sdk2.Event.POINT_REACHED) <span class="to
 
     drone.go_to_local_point(x=<span class="tok-n">0</span>, y=<span class="tok-n">0</span>, z=<span class="tok-n">1</span>, yaw=<span class="tok-n">0</span>, time=<span class="tok-n">3</span>) <span class="tok-c"># летим в точку с координатами x=0, y=0, z=1</span>
                                                           <span class="tok-c"># x, y, z - координаты точки в метрах</span>
-                                                          <span class="tok-c"># yaw - поворот по курсу в радианах</span>
+                                                          <span class="tok-c"># yaw - поворот по курсу в градусах</span>
                                                           <span class="tok-c"># time - время, за которое требуется достигнуть точку</span>
     wait_for_point()                                      <span class="tok-c"># ждем, пока дрон долетит до заданной точки</span>
 
@@ -97,7 +97,8 @@ z = <span class="tok-n">1.0</span>                                              
     radians = math.radians(angle)                     <span class="tok-c"># переводим угол из градусов в радианы</span>
     x = radius * math.cos(radians)                    <span class="tok-c"># вычисляем координату точки по оси X</span>
     y = radius * math.sin(radians)                    <span class="tok-c"># вычисляем координату точки по оси Y</span>
-    <span class="tok-k">return</span> x, y                                       <span class="tok-c"># возвращаем координаты X и Y</span></code></pre></div>
+    <span class="tok-k">return</span> x, y                                       <span class="tok-c"># возвращаем координаты X и Y</span>
+</code></pre></div>
 <p>Начальные настройки: радиус, число точек, стартовый угол и высота — обычные переменные в начале файла. Полёт сводится к циклу «рассчитать точку → лететь → дождаться»:</p>
 <div class="codewrap"><pre><code data-lang="python">    <span class="tok-k">while</span> circle_angle &lt; <span class="tok-n">360</span>:                             <span class="tok-c"># выполняем полет, пока не пройдем полный круг</span>
         frame = camera.get_cv_frame(timeout=<span class="tok-n">1.0</span>)          <span class="tok-c"># получаем один кадр с камеры</span>
@@ -116,11 +117,12 @@ z = <span class="tok-n">1.0</span>                                              
 
         circle_angle += <span class="tok-n">360</span> / circle_points             <span class="tok-c"># увеличиваем угол для перехода к следующей точке</span>
 
-    drone.land()                                        <span class="tok-c"># производим посадку после завершения полетного задания</span></code></pre></div>
+    drone.land()                                        <span class="tok-c"># производим посадку после завершения полетного задания</span>
+</code></pre></div>
 <p>Три приёма из фрагмента:</p>
 <ul>
 <li><code>wait_for_point()</code> здесь на polling: цикл ждёт <code>drone.point_reached()</code> с паузой 0,1 с — SDK возвращает флаг достижения точки.</li>
-<li>Кадр камеры запрашивается <code>camera.get_cv_frame(timeout=1.0)</code>; если получен, он публикуется командой <code>viewer.imshow("video", frame, fps=30)</code>. Поток <code>video</code> доступен по адресу <code>rtsp://10.42.0.1:8889/video/</code>.</li>
+<li>Кадр камеры запрашивается <code>camera.get_cv_frame(timeout=1.0)</code>; если получен, он публикуется командой <code>viewer.imshow("video", frame, fps=30)</code>. Поток <code>video</code> доступен по адресу <code>rtsp://10.42.0.1:8554/video/</code>.</li>
 <li>В <code>finally</code> останавливаются и видеотракт (<code>viewer.close()</code>, <code>camera.stop()</code>), и соединение с дроном — пропускать нельзя, RTSP-сервер иначе останется работать.</li>
 </ul>
 
@@ -129,7 +131,8 @@ z = <span class="tok-n">1.0</span>                                              
 <div class="codewrap"><pre><code data-lang="python"><span class="tok-k">def</span> wait_for_point():                          <span class="tok-c"># функция ожидания прилета дрона в точку</span>
     <span class="tok-k">while</span> <span class="tok-k">not</span> drone.point_reached():           <span class="tok-c"># ждем, пока дрон не достигнет заданной точки</span>
         show_camera()                          <span class="tok-c"># показываем видео с камеры во время полета</span>
-        time.sleep(<span class="tok-n">0.1</span>)                        <span class="tok-c"># ставим небольшую паузу, чтобы не нагружать программу</span></code></pre></div>
+        time.sleep(<span class="tok-n">0.1</span>)                        <span class="tok-c"># ставим небольшую паузу, чтобы не нагружать программу</span>
+</code></pre></div>
 <p>Принятие решения о полёте вынесено в <code>fly_through_points()</code>, а точки хранятся в списке словарей:</p>
 <div class="codewrap"><pre><code data-lang="python"><span class="tok-k">def</span> fly_through_points(points):                <span class="tok-c"># функция полета по заданным точкам</span>
     <span class="tok-k">for</span> point <span class="tok-k">in</span> points:                       <span class="tok-c"># перебираем все точки из списка</span>
@@ -149,8 +152,9 @@ waypoints = [                                  <span class="tok-c"># списо�
     {<span class="tok-s">"x"</span>: <span class="tok-n">1</span>, <span class="tok-s">"y"</span>: <span class="tok-n">1</span>, <span class="tok-s">"z"</span>: <span class="tok-n">0.7</span>, <span class="tok-s">"yaw"</span>: <span class="tok-n">0</span>},      <span class="tok-c"># точка 2</span>
     {<span class="tok-s">"x"</span>: <span class="tok-n">0</span>, <span class="tok-s">"y"</span>: <span class="tok-n">1</span>, <span class="tok-s">"z"</span>: <span class="tok-n">0.7</span>, <span class="tok-s">"yaw"</span>: <span class="tok-n">0</span>},      <span class="tok-c"># точка 3</span>
     {<span class="tok-s">"x"</span>: <span class="tok-n">0</span>, <span class="tok-s">"y"</span>: <span class="tok-n">0</span>, <span class="tok-s">"z"</span>: <span class="tok-n">0.7</span>, <span class="tok-s">"yaw"</span>: <span class="tok-n">0</span>},      <span class="tok-c"># возврат к начальной точке</span>
-]</code></pre></div>
-<p>Кадр здесь публикуется без <code>fps</code>: <code>viewer.imshow("pioneer_camera", frame)</code>; поток доступен по адресу <code>rtsp://10.42.0.1:8889/pioneer_camera/</code>.</p>
+]
+</code></pre></div>
+<p>Кадр здесь публикуется без <code>fps</code>: <code>viewer.imshow("pioneer_camera", frame)</code>; поток доступен по адресу <code>rtsp://10.42.0.1:8554/pioneer_camera/</code>.</p>
 
 <h2 id="m-speed">set_manual_speed.py — ручное задание скорости</h2>
 <p>Самый короткий полётный пример: две «прямые» по осям Y и X. Скорость задаётся одной командой из пяти аргументов:</p>
@@ -172,7 +176,8 @@ waypoints = [                                  <span class="tok-c"># списо�
     drone.set_manual_speed(<span class="tok-n">1</span>, <span class="tok-n">0</span>, <span class="tok-n">0</span>, <span class="tok-n">0</span>, <span class="tok-n">2</span>)     <span class="tok-c"># летим вправо по оси X в течение 2 секунд</span>
     time.sleep(<span class="tok-n">2</span>)                             <span class="tok-c"># ставим паузу на 2 секунды перед посадкой</span>
 
-    drone.land()                              <span class="tok-c"># садимся, двигатели выключатся автоматически</span></code></pre></div>
+    drone.land()                              <span class="tok-c"># садимся, двигатели выключатся автоматически</span>
+</code></pre></div>
 <ul>
 <li><code>vx, vy, vz</code> — скорости по осям корпуса в м/с; <code>yaw_rate</code> — скорость рысканья в <strong>рад/с</strong>.</li>
 <li><code>interval</code> — сколько секунд действует команда; после этого дрон зависает на месте.</li>

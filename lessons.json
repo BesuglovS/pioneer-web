@@ -78,6 +78,42 @@
       "order": 8,
       "startLesson": 11,
       "endLesson": 12
+    },
+    {
+      "id": "operation",
+      "title": "Эксплуатация",
+      "description": "Безопасность полётов, работа с аккумулятором, калибровка и обслуживание",
+      "icon": "🦺",
+      "order": 9,
+      "startLesson": 13,
+      "endLesson": 15
+    },
+    {
+      "id": "help",
+      "title": "Помощь",
+      "description": "Диагностика типовых проблем и настройка сети",
+      "icon": "🧭",
+      "order": 10,
+      "startLesson": 16,
+      "endLesson": 17
+    },
+    {
+      "id": "advanced",
+      "title": "Продвинутое",
+      "description": "Полезная нагрузка, роевые полёты, миграция SDK и свои нейросети",
+      "icon": "🚀",
+      "order": 11,
+      "startLesson": 18,
+      "endLesson": 21
+    },
+    {
+      "id": "reference",
+      "title": "Справочник",
+      "description": "Глоссарий, карта портов и ключевые пути бортовой системы",
+      "icon": "📖",
+      "order": 12,
+      "startLesson": 22,
+      "endLesson": 22
     }
   ],
   "lessons": [
@@ -200,6 +236,106 @@
       "duration": 40,
       "complexity": "intermediate",
       "html": "python"
+    },
+    {
+      "number": 13,
+      "slug": "safety",
+      "title": "Безопасность и регламенты",
+      "section": "operation",
+      "description": "Предполётный чек-лист, правила безопасных полётов, аварийные процедуры и требования воздушного законодательства",
+      "duration": 15,
+      "complexity": "beginner",
+      "html": "safety"
+    },
+    {
+      "number": 14,
+      "slug": "battery",
+      "title": "Аккумулятор и зарядка",
+      "section": "operation",
+      "description": "Li-Po АКБ Пионера: зарядка, хранение, транспортировка, пороги напряжения и события LOW_VOLTAGE/LOW_CHARGE",
+      "duration": 15,
+      "complexity": "beginner",
+      "html": "battery"
+    },
+    {
+      "number": 15,
+      "slug": "calibration",
+      "title": "Калибровка и обслуживание",
+      "section": "operation",
+      "description": "Калибровка IMU и компаса, пульта, сервопривода и дальномера; обновление прошивки автопилота и параметров, обслуживание",
+      "duration": 20,
+      "complexity": "intermediate",
+      "html": "calibration"
+    },
+    {
+      "number": 16,
+      "slug": "troubleshooting",
+      "title": "Диагностика и FAQ",
+      "section": "help",
+      "description": "Типовые проблемы Пионер Мини 2: Wi-Fi, SSH, видеопоток, NPU, двигатели, plazlink; команды диагностики на борту",
+      "duration": 25,
+      "complexity": "intermediate",
+      "html": "troubleshooting"
+    },
+    {
+      "number": 17,
+      "slug": "network",
+      "title": "Сеть и PioNet",
+      "section": "help",
+      "description": "Режимы Wi-Fi (точка доступа, клиент, USB), PioNet, netconfig, статический IP, смена SSID и пароля, карта портов",
+      "duration": 20,
+      "complexity": "intermediate",
+      "html": "network"
+    },
+    {
+      "number": 18,
+      "slug": "payload",
+      "title": "Полезная нагрузка",
+      "section": "advanced",
+      "description": "Разъёмы Type-C и крепления LEGO, флаги board_config (ranger/grab/cargo/flashlight), управление нагрузкой из pioneer_sdk2",
+      "duration": 20,
+      "complexity": "intermediate",
+      "html": "payload"
+    },
+    {
+      "number": 19,
+      "slug": "swarm",
+      "title": "Роевые полёты",
+      "section": "advanced",
+      "description": "Организация групповых полётов: адресация, синхронизация, планирование каналов Wi-Fi, координация и безопасность",
+      "duration": 25,
+      "complexity": "advanced",
+      "html": "swarm"
+    },
+    {
+      "number": 20,
+      "slug": "migration",
+      "title": "Миграция SDK1 → SDK2",
+      "section": "advanced",
+      "description": "Переход со старой библиотеки pioneer_sdk на pioneer_sdk2: карта методов, пример rc_sdk1_to_sdk2, класс VideoStream",
+      "duration": 20,
+      "complexity": "intermediate",
+      "html": "migration"
+    },
+    {
+      "number": 21,
+      "slug": "custom-models",
+      "title": "Свои нейросети на NPU",
+      "section": "advanced",
+      "description": "Обучение, экспорт в ONNX (opset=19), конвертация в RKNN и регистрация собственной модели в model-registry",
+      "duration": 30,
+      "complexity": "advanced",
+      "html": "custom-models"
+    },
+    {
+      "number": 22,
+      "slug": "glossary",
+      "title": "Глоссарий и карта системы",
+      "section": "reference",
+      "description": "Термины, аббревиатуры, карта портов, служб и ключевых путей бортовой системы Пионер Мини 2",
+      "duration": 10,
+      "complexity": "beginner",
+      "html": "glossary"
     }
   ]
 }

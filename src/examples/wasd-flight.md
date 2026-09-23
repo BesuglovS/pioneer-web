@@ -24,8 +24,9 @@ permalink: "/examples/wasd-flight/"
 
 x -- стоп, Esc -- посадка и выход
 """</span>
-)</code></pre></div>
-<p>Поток с видео с камеры: <code>rtsp://10.42.0.1:8889/video/</code>.</p>
+)
+</code></pre></div>
+<p>Поток с видео с камеры: <code>rtsp://10.42.0.1:8554/video/</code>.</p>
 
 <h2 id="w-speeds">Таблица скоростей</h2>
 <p>Клавиши движения отображаются на команды <code>set_manual_speed_body_fixed()</code> через словарь <code>SPEED_BY_KEY</code>; сами скорости фиксированы константами в начале файла:</p>
@@ -49,7 +50,8 @@ SPEED_BY_KEY = {                               <span class="tok-c"># табли�
     <span class="tok-s">"z"</span>: (<span class="tok-n">0.0</span>, <span class="tok-n">0.0</span>, -VERTICAL_SPEED, <span class="tok-n">0.0</span>),     <span class="tok-c"># вниз</span>
     <span class="tok-s">"q"</span>: (<span class="tok-n">0.0</span>, <span class="tok-n">0.0</span>, <span class="tok-n">0.0</span>, YAW_SPEED),           <span class="tok-c"># поворот влево</span>
     <span class="tok-s">"e"</span>: (<span class="tok-n">0.0</span>, <span class="tok-n">0.0</span>, <span class="tok-n">0.0</span>, -YAW_SPEED),          <span class="tok-c"># поворот вправо</span>
-}</code></pre></div>
+}
+</code></pre></div>
 <p>Обратите внимание: <code>q</code> — поворот влево (положительный <code>yaw_rate</code>), <code>e</code> — вправо (отрицательный); скорости в рад/с, а линейные — в м/с.</p>
 
 <h2 id="w-loop">Главный цикл: таймеры вместо событий</h2>
@@ -67,7 +69,8 @@ SPEED_BY_KEY = {                               <span class="tok-c"># табли�
             drone.set_manual_speed_body_fixed(*speed, COMMAND_INTERVAL)
             last_send_time = time.monotonic()
             last_sent_speed = speed
-</code></pre></div>
+
+</code></pre></div>
 <div class="tablewrap"><table>
 <thead><tr><th>Константа</th><th>Значение</th><th>Смысл</th></tr></thead>
 <tbody>
@@ -87,7 +90,8 @@ SPEED_BY_KEY = {                               <span class="tok-c"># табли�
             <span class="tok-k">pass</span>
         <span class="tok-k">except</span> Exception <span class="tok-k">as</span> error:             <span class="tok-c"># ошибка камеры не должна завершать программу управления</span>
             <span class="tok-b">print</span>(<span class="tok-s">"Ошибка видеопотока:"</span>, error)
-            time.sleep(<span class="tok-n">0.2</span>)</code></pre></div>
+            time.sleep(<span class="tok-n">0.2</span>)
+</code></pre></div>
 
 <h2 id="w-state">Штатные команды и завершение</h2>
 <p>Клавиши-действия превращаются в команды SDK: 1 — <code>arm()</code>, 2 — <code>disarm()</code>, 3 — <code>takeoff()</code> (с предварительным <code>arm()</code> при необходимости), 4 — нулевая скорость и <code>land()</code>. Проверка <code>sys.stdin.isatty()</code> в начале программно запрещает запуск без терминала. Безопасный выход гарантирован <code>finally</code>:</p>
@@ -98,5 +102,6 @@ SPEED_BY_KEY = {                               <span class="tok-c"># табли�
     <span class="tok-k">elif</span> state == <span class="tok-s">"ARMED"</span>:                     <span class="tok-c"># если двигатели включены, но взлета не было</span>
         drone.disarm()                         <span class="tok-c"># выключаем двигатели</span>
 
-    drone.close_connection()                   <span class="tok-c"># закрываем соединение с дроном</span></code></pre></div>
+    drone.close_connection()                   <span class="tok-c"># закрываем соединение с дроном</span>
+</code></pre></div>
 <p>Если программа завершается в полёте (<code>IN_SKY</code>), дрон получает нулевую скорость и садится; если двигатели включены, но взлёта не было (<code>ARMED</code>) — они выключаются командой <code>disarm()</code>.</p>

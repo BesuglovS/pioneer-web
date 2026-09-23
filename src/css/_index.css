@@ -13,7 +13,8 @@
   font-size: 15px; outline: none;
 }
 .search-input:focus { border-color: var(--accent); }
-.search-no-results { color: var(--ink-soft); text-align: center; padding: 20px 0; }
+.search-no-results { display: none; color: var(--ink-soft); text-align: center; padding: 20px 0; }
+.search-no-results.is-visible { display: block; }
 
 /* section groups + cards */
 .section-group { margin: 26px 0; }

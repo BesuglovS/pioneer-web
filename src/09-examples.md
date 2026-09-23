@@ -71,7 +71,8 @@ pageSlug: "examples"
 <div class="codewrap"><pre><code data-lang="python">viewer = ImageViewer()
 viewer.imshow(name="video", frame=frame, fps=30)</code></pre></div>
 <p>Поток <code>video</code> доступен по адресу:</p>
-<div class="codewrap"><pre><code data-lang="text">rtsp://10.42.0.1:8889/video/</code></pre></div>
+<div class="codewrap"><pre><code data-lang="text">rtsp://10.42.0.1:8554/video/</code></pre></div>
+<p>Порты mediamtx на борту: <strong>8554</strong> — RTSP, <strong>8889</strong> — WebRTC (браузер: <code>http://10.42.0.1:8889/video/</code>), <strong>8888</strong> — HLS, <strong>8890</strong> — SRT, <strong>9997</strong> — REST API. В комментариях официальных примеров встречается <code>rtsp://…:8889</code> — это опечатка: порт 8889 отдаёт WebRTC, а не RTSP.</p>
 <p>Для других примеров имя потока указано в README соответствующей директории.</p>
 
 <h2 id="ex-typical">Типовые задачи (из официальной документации)</h2>

@@ -34,7 +34,7 @@ function filterAndRender(query) {
   const visibleCount = cards.filter((c) => c.style.display !== 'none').length;
   const noResults = qs('.search-no-results');
   if (noResults) {
-    noResults.style.display = visibleCount === 0 && normalizedQuery ? '' : 'none';
+    noResults.classList.toggle('is-visible', visibleCount === 0 && Boolean(normalizedQuery));
   }
 }
 

@@ -53,7 +53,7 @@ viewer = ImageViewer()                        <span class="tok-c"># создае
 <ul>
 <li>Словарь <code>DICT_ARUCO_ORIGINAL</code> один на всю группу — ваши метки должны быть напечатаны из того же словаря.</li>
 <li>В OpenCV 4.7+ детектор — это объект <code>ArucoDetector</code>; <code>detectMarkers(frame)</code> возвращает углы меток, ID и отбракованные области.</li>
-<li>Найденные метки рисуются на кадре <code>cv2.aruco.drawDetectedMarkers</code>, и кадр публикуется в поток <code>aruco</code>: <code>rtsp://10.42.0.1:8889/aruco/</code>.</li>
+<li>Найденные метки рисуются на кадре <code>cv2.aruco.drawDetectedMarkers</code>, и кадр публикуется в поток <code>aruco</code>: <code>rtsp://10.42.0.1:8554/aruco/</code>.</li>
 </ul>
 
 <h2 id="a-coords">detect_aruco_coordinates.py — координаты метки (solvePnP)</h2>
@@ -71,7 +71,8 @@ points_of_marker = np.array([            <span class="tok-c"># задаем ко
     (-size_of_marker / <span class="tok-n">2</span>, -size_of_marker / <span class="tok-n">2</span>, <span class="tok-n">0</span>),
     (-size_of_marker / <span class="tok-n">2</span>, size_of_marker / <span class="tok-n">2</span>, <span class="tok-n">0</span>),
     (size_of_marker / <span class="tok-n">2</span>, size_of_marker / <span class="tok-n">2</span>, <span class="tok-n">0</span>)
-], dtype=np.float32)                      <span class="tok-c"># используем тип float32, который подходит для функций OpenCV</span></code></pre></div>
+], dtype=np.float32)                      <span class="tok-c"># используем тип float32, который подходит для функций OpenCV</span>
+</code></pre></div>
 <ul>
 <li><code>load_coefficients()</code> читает из <code>data.yml</code> матрицу камеры <code>mtx</code> и коэффициенты искажений <code>dist</code>; файл ищется рядом со скриптом.</li>
 <li><code>size_of_marker = 0.05</code> — сторона метки в метрах. Четыре угла метки задаются в 3D координатами <code>points_of_marker</code> (центр метки — начало координат).</li>
@@ -94,8 +95,9 @@ points_of_marker = np.array([            <span class="tok-c"># задаем ко
                 cv2.drawFrameAxes(frame, camera_matrix, dist_coeffs, rvecs, tvecs, <span class="tok-n">0.1</span>) <span class="tok-c"># рисуем оси координат метки</span>
 
         cv2.aruco.drawDetectedMarkers(frame, corners, ids) <span class="tok-c"># рисуем найденные ArUco-метки на изображении</span>
-        viewer.imshow(<span class="tok-s">"aruco_coordinates"</span>, frame, fps=<span class="tok-n">30</span>)  <span class="tok-c"># запускаем трансляцию изображения</span></code></pre></div>
-<p>Вектор <code>tvecs</code> — положение метки относительно камеры: <code>x</code> и <code>y</code> лежат в плоскости кадра, <code>z</code> — вглубь (расстояние до метки). Оси метки рисуются командой <code>cv2.drawFrameAxes</code>; поток <code>aruco_coordinates</code> — <code>rtsp://10.42.0.1:8889/aruco_coordinates/</code>.</p>
+        viewer.imshow(<span class="tok-s">"aruco_coordinates"</span>, frame, fps=<span class="tok-n">30</span>)  <span class="tok-c"># запускаем трансляцию изображения</span>
+</code></pre></div>
+<p>Вектор <code>tvecs</code> — положение метки относительно камеры: <code>x</code> и <code>y</code> лежат в плоскости кадра, <code>z</code> — вглубь (расстояние до метки). Оси метки рисуются командой <code>cv2.drawFrameAxes</code>; поток <code>aruco_coordinates</code> — <code>rtsp://10.42.0.1:8554/aruco_coordinates/</code>.</p>
 
 <h2 id="a-flight">aruco_flight.py — полёт с удержанием метки</h2>
 <p>Крупный пример (~375 строк): дрон по клавише взлетает, а затем визуально удерживает метку в кадре, корректируя дистанцию и высоту. Код разделён на два потока: <strong>VideoProcessingThread</strong> непрерывно детектирует метку и публикует кадр, а главный цикл принимает решения и отправляет скорости. Константы задают «правила игры»:</p>
@@ -107,7 +109,8 @@ VERTICAL_SPEED = <span class="tok-n">0.25</span>                                
 YAW_RATE = <span class="tok-n">0.4</span>                                         <span class="tok-c"># скорость поворота к метке в рад/с</span>
 COMMAND_INTERVAL = <span class="tok-n">0.3</span>                                 <span class="tok-c"># время действия команды скорости в секундах</span>
 SEND_PERIOD = <span class="tok-n">0.2</span>                                      <span class="tok-c"># как часто повторять команду скорости, включая нулевую</span>
-ZERO_SPEED = (<span class="tok-n">0.0</span>, <span class="tok-n">0.0</span>, <span class="tok-n">0.0</span>, <span class="tok-n">0.0</span>)                      <span class="tok-c"># нулевая команда: vx, vy, vz, yaw_rate</span></code></pre></div>
+ZERO_SPEED = (<span class="tok-n">0.0</span>, <span class="tok-n">0.0</span>, <span class="tok-n">0.0</span>, <span class="tok-n">0.0</span>)                      <span class="tok-c"># нулевая команда: vx, vy, vz, yaw_rate</span>
+</code></pre></div>
 <p>Кадр разбивается на три колонки и три строки — так дрон понимает, куда сместилась метка:</p>
 <div class="codewrap"><pre><code data-lang="python"><span class="tok-k">def</span> get_marker_zone(x_center, frame_width):            <span class="tok-c"># функция определяет, в какой зоне кадра находится метка</span>
     <span class="tok-k">if</span> x_center &lt; frame_width / <span class="tok-n">3</span>:                     <span class="tok-c"># проверяем, что центр метки слева от центральной зоны</span>
@@ -122,7 +125,8 @@ ZERO_SPEED = (<span class="tok-n">0.0</span>, <span class="tok-n">0.0</span>, <s
         <span class="tok-k">return</span> <span class="tok-s">"top"</span>                                   <span class="tok-c"># возвращаем верхнюю зону</span>
     <span class="tok-k">if</span> y_center &gt; frame_height * <span class="tok-n">2</span> / <span class="tok-n">3</span>:                <span class="tok-c"># проверяем, что центр метки ниже центральной зоны</span>
         <span class="tok-k">return</span> <span class="tok-s">"bottom"</span>                                <span class="tok-c"># возвращаем нижнюю зону</span>
-    <span class="tok-k">return</span> <span class="tok-s">"center"</span>                                    <span class="tok-c"># возвращаем центральную зону</span></code></pre></div>
+    <span class="tok-k">return</span> <span class="tok-s">"center"</span>                                    <span class="tok-c"># возвращаем центральную зону</span>
+</code></pre></div>
 <p>Основное решение главного цикла — три простых порога: по дистанции, по горизонтальной зоне и по вертикальной зоне кадра:</p>
 <div class="codewrap"><pre><code data-lang="python">        <span class="tok-k">if</span> in_sky <span class="tok-k">and</span> coordinates <span class="tok-k">is</span> <span class="tok-k">not</span> <span class="tok-k">None</span> <span class="tok-k">and</span> x_center <span class="tok-k">is</span> <span class="tok-k">not</span> <span class="tok-k">None</span> <span class="tok-k">and</span> y_center <span class="tok-k">is</span> <span class="tok-k">not</span> <span class="tok-k">None</span> <span class="tok-k">and</span> frame_width <span class="tok-k">is</span> <span class="tok-k">not</span> <span class="tok-k">None</span> <span class="tok-k">and</span> frame_height <span class="tok-k">is</span> <span class="tok-k">not</span> <span class="tok-k">None</span>: <span class="tok-c"># проверяем, что дрон в воздухе и метка найдена</span>
             distance = <span class="tok-b">float</span>(np.linalg.norm(coordinates)) <span class="tok-c"># вычисляем расстояние до ArUco-метки</span>
@@ -157,7 +161,8 @@ ZERO_SPEED = (<span class="tok-n">0.0</span>, <span class="tok-n">0.0</span>, <s
             <span class="tok-k">else</span>:                                    <span class="tok-c"># если метка находится по центру по вертикали</span>
                 status_parts.append(<span class="tok-s">"hold height"</span>)   <span class="tok-c"># сохраняем действие по высоте</span>
 
-            status = <span class="tok-s">", "</span>.join(status_parts)         <span class="tok-c"># собираем текстовое описание действия</span></code></pre></div>
+            status = <span class="tok-s">", "</span>.join(status_parts)         <span class="tok-c"># собираем текстовое описание действия</span>
+</code></pre></div>
 <p>Разбор решения:</p>
 <ul>
 <li><code>distance = np.linalg.norm(coordinates)</code> — расстояние до метки по 3D-вектору, который дал <code>cv2.solvePnP</code>.</li>
@@ -175,7 +180,8 @@ ZERO_SPEED = (<span class="tok-n">0.0</span>, <span class="tok-n">0.0</span>, <s
             last_speed_send_time = time.monotonic()  <span class="tok-c"># запоминаем время отправки команды</span>
             last_sent_speed = speed_command          <span class="tok-c"># запоминаем последнюю отправленную скорость</span>
 
-        time.sleep(<span class="tok-n">0.05</span>)                            <span class="tok-c"># ставим небольшую паузу, чтобы не нагружать программу</span></code></pre></div>
+        time.sleep(<span class="tok-n">0.05</span>)                            <span class="tok-c"># ставим небольшую паузу, чтобы не нагружать программу</span>
+</code></pre></div>
 <p>Размер метки здесь уже 0,1 м, а сервокамера перед стартом ставится на 25° — камера смотрит горизонтально. Гарантию безопасного завершения даёт <code>finally</code>: нулевая скорость и посадка, если дрон всё ещё в воздухе:</p>
 <div class="codewrap"><pre><code data-lang="python"><span class="tok-k">finally</span>:                                            <span class="tok-c"># блок finally выполнится при завершении программы</span>
     restore_terminal(terminal_settings)             <span class="tok-c"># восстанавливаем настройки терминала</span>
@@ -185,7 +191,8 @@ ZERO_SPEED = (<span class="tok-n">0.0</span>, <span class="tok-n">0.0</span>, <s
     <span class="tok-k">if</span> drone.get_fly_state().name == <span class="tok-s">"IN_SKY"</span>:      <span class="tok-c"># проверяем, находится ли дрон в воздухе</span>
         drone.set_manual_speed_body_fixed(*ZERO_SPEED, COMMAND_INTERVAL) <span class="tok-c"># отправляем нулевую скорость перед посадкой</span>
         drone.land()                                <span class="tok-c"># производим посадку</span>
-</code></pre></div>
+
+</code></pre></div>
 
 <h2 id="a-safety">Безопасность</h2>
 <ul>

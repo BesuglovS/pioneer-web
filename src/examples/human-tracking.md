@@ -46,7 +46,8 @@ model = YoloPose(model_name="yolov8n-pose")      # модель из реест�
     vz = <span class="tok-n">0.0</span>                                            <span class="tok-c"># высоту удерживает автопилот после выхода на рабочую высоту</span>
     yaw_rate = limit(YAW_KP * yaw_error, -MAX_YAW_RATE, MAX_YAW_RATE) <span class="tok-c"># скорость поворота</span>
 
-    <span class="tok-k">return</span> vx, vy, vz, yaw_rate                         <span class="tok-c"># возвращаем команду скорости</span></code></pre></div>
+    <span class="tok-k">return</span> vx, vy, vz, yaw_rate                         <span class="tok-c"># возвращаем команду скорости</span>
+</code></pre></div>
 <ul>
 <li><code>yaw_error</code> — ошибка по горизонтали: смещение центра рамки от середины кадра в пикселях.</li>
 <li><code>yaw_rate = YAW_KP * yaw_error</code> — классический П-регулятор: чем дальше человек от центра, тем быстрее поворот; <code>limit()</code> ограничивает скорость диапазоном <code>MAX_YAW_RATE</code>.</li>
@@ -68,7 +69,8 @@ model = YoloPose(model_name="yolov8n-pose")      # модель из реест�
                 send_speed_command(drone, speed, immediate=<span class="tok-k">False</span>) <span class="tok-c"># отправляем скорость по таймеру</span>
                 draw_box(frame, main_box, speed)         <span class="tok-c"># рисуем рамку и команду</span>
 
-            viewer.imshow(name=<span class="tok-s">"human_tracking"</span>, frame=frame, fps=<span class="tok-n">30</span>) <span class="tok-c"># публикуем кадр</span></code></pre></div>
+            viewer.imshow(name=<span class="tok-s">"human_tracking"</span>, frame=frame, fps=<span class="tok-n">30</span>) <span class="tok-c"># публикуем кадр</span>
+</code></pre></div>
 <p>Три механизма безопасности, повторяющиеся в обоих файлах:</p>
 <ul>
 <li>Нет кадра (timeout или <code>None</code>) — немедленная нулевая скорость, дрон зависает.</li>
@@ -93,7 +95,8 @@ model = YoloPose(model_name="yolov8n-pose")      # модель из реест�
 LAND_STABLE_FRAMES = <span class="tok-n">18</span>                                 <span class="tok-c"># посадку подтверждаем дольше, чтобы избежать случайного срабатывания</span>
 GESTURE_COOLDOWN = <span class="tok-n">2.0</span>                                  <span class="tok-c"># пауза между повторным выполнением одного и того же жеста</span>
 PHOTO_DELAY = <span class="tok-n">5.0</span>                                       <span class="tok-c"># задержка перед сохранением фотографии в секундах</span>
-</code></pre></div>
+
+</code></pre></div>
 
 <h2 id="h-stable">Стабилизация жеста</h2>
 <p>Чтобы случайно поднятая рука не превратилась в команду, жест считается командой только после <code>STABLE_FRAMES</code> кадров подряд; для посадки порог выше — <code>LAND_STABLE_FRAMES</code>. Плюс кулдаун между повторами:</p>
@@ -120,7 +123,8 @@ PHOTO_DELAY = <span class="tok-n">5.0</span>                                    
         <span class="tok-k">return</span> <span class="tok-k">False</span>                                     <span class="tok-c"># если пауза не прошла, действие не выполняем</span>
 
     last_action_time[gesture] = now                      <span class="tok-c"># обновляем время выполнения жеста</span>
-    <span class="tok-k">return</span> <span class="tok-k">True</span>                                          <span class="tok-c"># разрешаем выполнить действие</span></code></pre></div>
+    <span class="tok-k">return</span> <span class="tok-k">True</span>                                          <span class="tok-c"># разрешаем выполнить действие</span>
+</code></pre></div>
 <p>Здесь два независимых «замка»:</p>
 <ul>
 <li><code>get_stable_gesture()</code> следит за <code>deque</code> последних распознанных кадров: команда выполняется, только если <strong>все</strong> последние кадры дают тот же жест.</li>
@@ -152,13 +156,14 @@ PHOTO_DELAY = <span class="tok-n">5.0</span>                                    
                 cv2.putText(frame, <span class="tok-s">"person not found"</span>, (<span class="tok-n">20</span>, <span class="tok-n">40</span>), cv2.FONT_HERSHEY_SIMPLEX, <span class="tok-n">1.0</span>, (<span class="tok-n">0</span>, <span class="tok-n">0</span>, <span class="tok-n">255</span>), <span class="tok-n">2</span>) <span class="tok-c"># пишем сообщение на кадре</span>
                 send_hover_speed(drone)                  <span class="tok-c"># отправляем команду зависания</span>
 
-            viewer.imshow(name=<span class="tok-s">"human_tracking"</span>, frame=frame, fps=<span class="tok-n">30</span>) <span class="tok-c"># отправляем кадр в RTSP-трансляцию</span></code></pre></div>
+            viewer.imshow(name=<span class="tok-s">"human_tracking"</span>, frame=frame, fps=<span class="tok-n">30</span>) <span class="tok-c"># отправляем кадр в RTSP-трансляцию</span>
+</code></pre></div>
 <p>Один случайный жест проблем не вызовет: он считается кандидатом (жёлтая подпись на кадре) и исполняется только после подтверждения на <code>STABLE_FRAMES</code> кадрах (зелёная подпись). Полный разбор визуального интерфейса жестов с картинками — в README директории репозитория.</p>
 
 <h2 id="h-run-safe">Запуск и рекомендации</h2>
 <div class="codewrap"><pre><code data-lang="bash">python3 human_tracking_simple.py
 python3 human_tracking_rknn.py</code></pre></div>
-<p>Обработанный кадр — <code>rtsp://10.42.0.1:8889/human_tracking/</code>. Рекомендации README:</p>
+<p>Обработанный кадр — <code>rtsp://10.42.0.1:8554/human_tracking/</code>. Рекомендации README:</p>
 <ul>
 <li>Контрастный фон и хорошее освещение делают детекцию стабильнее.</li>
 <li>Первый полёт — с небольшими <code>MAX_VX</code>, <code>MAX_VY</code> и <code>MAX_YAW_RATE</code>; коэффициенты и ограничители меняйте постепенно.</li>
