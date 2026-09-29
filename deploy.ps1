@@ -172,25 +172,15 @@ if ($DryRun) {
   cmd /c $scpCmd
   if ($LASTEXITCODE -ne 0) { Write-Host "  Nginx config scp failed" -ForegroundColor Red; exit 1 }
 
-  # Устанавливаем новый конфиг, тестируем; при ошибке откатываемся и выходим.
-  $sshNginxCmd = 'ssh ' + $portArg + ' ' + $identityArg + ' ' + $remote + ' "cp ' + $nginxRemote + ' /tmp/nginx-backup-' + $nginxSite + ' ; cp /tmp/nginx-' + $nginxSite + ' ' + $nginxRemote + ' ; nginx -t"'
+  # Устанавливаем новый конфиг через root-хелпер (sudoers deploy-nginx):
+  # хелпер сам валидирует nginx -t, делает symlink sites-enabled и откатывает
+  # конфиг при ошибке.
+  $sshNginxCmd = 'ssh ' + $portArg + ' ' + $identityArg + ' ' + $remote + ' "sudo -n /usr/local/sbin/deploy-nginx.sh ' + $nginxSite + '"'
   cmd /c $sshNginxCmd
   if ($LASTEXITCODE -ne 0) {
-    Write-Host "  nginx -t failed — rolling back previous config..." -ForegroundColor Red
-    $sshRollbackCmd = 'ssh ' + $portArg + ' ' + $identityArg + ' ' + $remote + ' "cp /tmp/nginx-backup-' + $nginxSite + ' ' + $nginxRemote + ' ; rm -f /tmp/nginx-' + $nginxSite + ' /tmp/nginx-backup-' + $nginxSite + ' ; systemctl reload nginx"'
-    cmd /c $sshRollbackCmd
-    Write-Host "  Rolled back. Deploy aborted." -ForegroundColor Red
+    Write-Host "  nginx deploy failed (config not applied). Deploy aborted." -ForegroundColor Red
     exit 1
   }
-
-  # Плюс symlink sites-enabled (идемпотентно для нового сайта)
-  $sshLinkCmd = 'ssh ' + $portArg + ' ' + $identityArg + ' ' + $remote + ' "ln -sf ' + $nginxRemote + ' /etc/nginx/sites-enabled/' + $nginxSite + '"'
-  cmd /c $sshLinkCmd
-  if ($LASTEXITCODE -ne 0) { Write-Host "  Nginx sites-enabled symlink failed" -ForegroundColor Red; exit 1 }
-
-  $sshReloadCmd = 'ssh ' + $portArg + ' ' + $identityArg + ' ' + $remote + ' "systemctl reload nginx ; rm -f /tmp/nginx-' + $nginxSite + ' /tmp/nginx-backup-' + $nginxSite + '"'
-  cmd /c $sshReloadCmd
-  if ($LASTEXITCODE -ne 0) { Write-Host "  Nginx reload failed" -ForegroundColor Red; exit 1 }
   Write-Host "  Done." -ForegroundColor Green
 }
 
