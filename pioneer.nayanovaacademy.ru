@@ -97,6 +97,10 @@ server {
     location = /08-examples/ { return 301 /09-examples/; }
     location = /09-links/  { return 301 /10-links/; }
 
+    # Симулятор перенесён на самостоятельный домен fly.nayanovaacademy.ru
+    location = /fly/ { return 301 https://fly.nayanovaacademy.ru/; }
+    location = /fly/index.html { return 301 https://fly.nayanovaacademy.ru/; }
+
     # 3. Service Worker без content-hash — не кэшируем,
     # иначе браузер не увидит обновления sw.js.
     # Свой add_header => дублируем security-набор (см. шапку файла).
@@ -110,7 +114,24 @@ server {
         add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; font-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'" always;
     }
 
-    # 4. Кэширование статических ресурсов (CSS/JS/изображения — 1 год; имена с content-hash ?v=)
+    # 4. Симулятор полёта (/fly/): файлы без content-hash (?v=) в имени,
+    # поэтому длинное immutable-кэширование здесь НЕДОПУСТИМО — иначе после
+    # деплоя браузер навсегда отдаёт старые app.js/style.css (новый HTML
+    # ссылается на старый JS — ломаются кнопки). no-cache.
+    # Префикс ^~ приоритетнее regex-локаций ниже.
+    # Свой add_header => дублируем security-набор (см. шапку файла).
+    location ^~ /fly/ {
+        try_files $uri $uri/ =404;
+        add_header Cache-Control "no-cache, must-revalidate" always;
+        add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+        add_header X-Frame-Options "DENY" always;
+        add_header X-Content-Type-Options "nosniff" always;
+        add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+        add_header Permissions-Policy "camera=(), microphone=(), geolocation=()" always;
+        add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; font-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'" always;
+    }
+
+    # 5. Кэширование статических ресурсов (CSS/JS/изображения — 1 год; имена с content-hash ?v=)
     # Свой add_header => дублируем security-набор (см. шапку файла).
     location ~* \.(css|js|png|jpg|jpeg|gif|ico|svg|webp|woff|woff2|ttf|eot)$ {
         add_header Cache-Control "public, max-age=31536000, immutable" always;
@@ -123,7 +144,7 @@ server {
         access_log off;
     }
 
-    # 5. HTML — не кэшируем (контент меняется при деплое).
+    # 6. HTML — не кэшируем (контент меняется при деплое).
     # Свой add_header => дублируем security-набор (см. шапку файла).
     location ~* \.html$ {
         add_header Cache-Control "no-cache, must-revalidate" always;
@@ -135,7 +156,7 @@ server {
         add_header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; font-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'" always;
     }
 
-    # 6. Блокировка скрытых файлов (кроме /.well-known/acme-challenge/)
+    # 7. Блокировка скрытых файлов (кроме /.well-known/acme-challenge/)
     location ~ /\. {
         deny all;
         access_log off;

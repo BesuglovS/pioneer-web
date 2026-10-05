@@ -30,14 +30,13 @@
    (`storageGet/storageSet`, `ssGet/ssSet`).
 9. **Service worker регистрируется только в продакшене** (`sw-register.js` пропускает localhost).
 
-## 🗺 Три типа страниц
+## 🗺 Типы страниц
 
 | Тип | Расположение | URL | В `lessons.json`? | На главной/в гамбургере/поиске? | Prev/next |
 |---|---|---|---|---|---|
 | **Урок** | `src/NN-slug.md` | `/NN-slug/` | да | да | да (по `pageNumber`) |
 | **Разбор примеров** | `src/examples/<slug>.md` | `/examples/<slug>/` (пермалинк) | **нет** | нет | нет |
 | **Справочник SDK2** | `src/sdk2/*.njk` | `/sdk2/...` (пермалинк) | **нет** | только отдельные ссылки | свой `.bottom-controls` |
-
 Страницы разбора (`src/examples/*.md`, 8 шт.: mission, get-telemetry, camera, aruco,
 rc-channels, human-tracking, wasd-flight, events) не имеют `pageNumber`, поэтому
 `eleventyComputed` даёт им null для `prevPage/nextPage/currentSection` — breadcrumb
@@ -81,9 +80,8 @@ npm run clean               # удаление _site/ и node_modules (PowerShel
 npm run deploy              # деплой (powershell deploy.ps1), есть -DryRun и -SkipBuild
 ```
 
-> В dev-режиме `eleventy.after` пересобирает CSS/JS (только при запуске с `--serve`/`--watch`).
-> После правки `lessons.json` запустите `npm run build:config-meta` (+ `build:assets-hash`), иначе
-> courseData.js/assetsHash не обновятся.
+ После правки `lessons.json` запустите `npm run build:config-meta`
+> (+ `build:assets-hash`), иначе courseData.js/assetsHash не обновятся.
 
 ## 🏗 Структура
 
@@ -126,7 +124,7 @@ pioneer.nayanovaacademy.ru   # nginx-конфиг (деплоится deploy.ps1
 6. `npx @11ty/eleventy` → `_site/{NN-slug}/index.html`, `_site/404.html`, `_site/examples/<slug>/`,
    robots.txt, sitemap.xml + passthrough (favicon). Сырые css/js в вывод НЕ копируются —
    сайт грузит только собранные main.css/main.js/theme-init.js с `?v=<hash>`
-7. `build-sw.mjs` → `_site/sw.js` (последний шаг; сканирует ВСЕ файлы `_site/`; CACHE_NAME =
+8. `build-sw.mjs` → `_site/sw.js` (последний шаг; сканирует ВСЕ файлы `_site/`; CACHE_NAME =
    хэш sha256 от путей+содержимого — SW обновляется при любом изменении контента)
 
 ## 📝 Редактирование контента

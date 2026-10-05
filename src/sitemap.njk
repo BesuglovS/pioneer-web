@@ -11,9 +11,9 @@ eleventyExcludeFromCollections: true
 {% for slug in examples.links %}
   <url><loc>{{ site.url }}/examples/{{ slug }}/</loc></url>
 {% endfor %}
+  <url><loc>https://fly.nayanovaacademy.ru/</loc></url>
   <url><loc>{{ site.url }}/sdk2/</loc></url>
-  <url><loc>{{ site.url }}/sdk2/examples/</loc></url>
-{% for cat in sdk2.categories %}
+  <url><loc>{{ site.url }}/sdk2/examples/</loc></url>{% for cat in sdk2.categories %}
   <url><loc>{{ site.url }}/sdk2/{{ cat.slug }}/</loc></url>
 {% endfor %}
 {% for m in sdk2.methods %}
