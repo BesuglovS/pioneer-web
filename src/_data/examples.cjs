@@ -8,5 +8,6 @@ module.exports = {
     'human-tracking',
     'wasd-flight',
     'events',
+    'flight-lib',
   ],
 };

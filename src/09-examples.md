@@ -23,6 +23,7 @@ pageSlug: "examples"
 <tr><td><a href="/examples/wasd-flight/">WASD_flight.py</a></td><td><code>WASD_flight.py</code></td><td>Интерактивное управление с клавиатуры через SSH с видеопотоком</td></tr>
 <tr><td><a href="/examples/events/">События автопилота</a></td><td><code>subscribe_event.py</code>, <code>unsubscribe_event.py</code></td><td>Подписка колбэков на события автопилота и отписка</td></tr>
 </tbody></table></div>
+<p><strong>Авторский разбор:</strong> <a href="/examples/flight-lib/">библиотека полёта <code>flight_lib</code></a> — обёртка над SDK2 для готовых миссий: взлёт с удержанием высоты по дальномеру, движение по корпусу, развороты, распознавание цвета листа A4 и поиск объекта по высоте. Страница содержит полное описание API и примеры кода, которые можно запускать на борту.</p>
 
 <h2 id="ex-struct">Структура репозитория</h2>
 <div class="codewrap"><pre><code data-lang="text">.

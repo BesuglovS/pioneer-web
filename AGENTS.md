@@ -1,7 +1,7 @@
 # AGENTS.md — Инструкции для ИИ-ассистентов
 
 Статический сайт-документация «Программирование Пионер Мини 2 и Пионер Базовый»
-(22 урока + 8 страниц разбора примеров, 12 разделов, русский язык).
+(22 урока + 9 страниц разбора примеров, 12 разделов, русский язык).
 Сайт генерируется **Eleventy (11ty) v3**; интерактив — vanilla JS (ES-модули, без фреймворков).
 Серверной части нет — чистая статика + nginx. Метаданные уроков — в `lessons.json`.
 Прод: `https://pioneer.nayanovaacademy.ru`.
@@ -37,8 +37,8 @@
 | **Урок** | `src/NN-slug.md` | `/NN-slug/` | да | да | да (по `pageNumber`) |
 | **Разбор примеров** | `src/examples/<slug>.md` | `/examples/<slug>/` (пермалинк) | **нет** | нет | нет |
 | **Справочник SDK2** | `src/sdk2/*.njk` | `/sdk2/...` (пермалинк) | **нет** | только отдельные ссылки | свой `.bottom-controls` |
-Страницы разбора (`src/examples/*.md`, 8 шт.: mission, get-telemetry, camera, aruco,
-rc-channels, human-tracking, wasd-flight, events) не имеют `pageNumber`, поэтому
+Страницы разбора (`src/examples/*.md`, 9 шт.: mission, get-telemetry, camera, aruco,
+rc-channels, human-tracking, wasd-flight, events, flight-lib) не имеют `pageNumber`, поэтому
 `eleventyComputed` даёт им null для `prevPage/nextPage/currentSection` — breadcrumb
 «Главная › заголовок», футер без стрелок. Каждая ссылается «← Все разборы примеров» на `/09-examples/`,
 а урок 9 содержит сводную таблицу разборов. **Не добавляйте их в `lessons.json`** — они не должны
